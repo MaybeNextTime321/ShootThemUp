@@ -8,6 +8,8 @@
 #include "STUBaseCharacter.generated.h"
 
 class UCameraComponent;
+class USTUHealthComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -27,6 +29,12 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
     USpringArmComponent *SpringArmComp;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
+    USTUHealthComponent *HealthComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
+    UTextRenderComponent *TextRenderComponent;
 
   public:
     // Called every frame
