@@ -9,6 +9,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
+DEFINE_LOG_CATEGORY_STATIC(CharacterLog, All, All)
+
 // Sets default values
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer &ObjInit)
     : Super(
@@ -46,6 +48,7 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 
     const float Health = HealthComponent->GetHealth();
     TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+    // TakeDamage(0.1f, FDamageEvent{}, Controller, this);
 }
 
 // Called to bind functionality to input
