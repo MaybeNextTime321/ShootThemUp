@@ -39,16 +39,15 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer &ObjInit)
 void ASTUBaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
+    OnHealthChange(HealthComponent->GetHealth());
+    HealthComponent->OnDead.AddUObject(this, &ASTUBaseCharacter::CharacterIsDead);
+    HealthComponent->OnHealthChange.AddUObject(this, &ASTUBaseCharacter::OnHealthChange);
 }
 
 // Called every frame
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-    const float Health = HealthComponent->GetHealth();
-    TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-    // TakeDamage(0.1f, FDamageEvent{}, Controller, this);
 }
 
 // Called to bind functionality to input
@@ -80,6 +79,19 @@ float ASTUBaseCharacter::GetDegree()
     FVector CrossProduct = FVector::CrossProduct(ForwardVector, Velocity);
     float Degree = FMath::RadiansToDegrees(Angle);
     return Degree * FMath::Sign(CrossProduct.Z);
+}
+
+void ASTUBaseCharacter::OnHealthChange(float HP)
+{
+    TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), HP)));
+}
+
+void ASTUBaseCharacter::CharacterIsDead()
+{
+    PlayAnimMontage(AnimMontage);
+    GetCharacterMovement()->DisableMovement();
+
+    SetLifeSpan(5.0f);
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)

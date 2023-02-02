@@ -49,7 +49,13 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UFUNCTION(BlueprintCallable)
     float GetDegree();
 
+    UPROPERTY(EditAnyWhere, Category = "Animation")
+    UAnimMontage *AnimMontage;
+
   private:
+    UFUNCTION()
+    void OnHealthChange(float HP);
+    void CharacterIsDead();
     void MoveForward(float Amount);
     void MoveRight(float Amount);
     void SetShiftValue();
