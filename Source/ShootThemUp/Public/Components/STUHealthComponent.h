@@ -6,8 +6,8 @@
 #include "CoreMinimal.h"
 #include "STUHealthComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnDead)
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeDamage, float)
+DECLARE_MULTICAST_DELEGATE(FOnDeadSignature)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeDamageSignature, float)
 
     UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent)) class SHOOTTHEMUP_API USTUHealthComponent
     : public UActorComponent
@@ -28,8 +28,8 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeDamage, float)
         return Health <= 0.0f;
     }
 
-    FOnDead OnDead;
-    FOnTakeDamage OnHealthChange;
+    FOnDeadSignature OnDead;
+    FOnTakeDamageSignature OnHealthChange;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Autoheal")
     bool Autoheal = true;

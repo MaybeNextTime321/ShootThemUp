@@ -36,6 +36,12 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
     UTextRenderComponent *TextRenderComponent;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
+    FVector2D LandedDamageVelocity = {900, 1200};
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
+    FVector2D LandedDamage = {10, 20};
+
   public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -61,4 +67,6 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     void SetShiftValue();
     bool ShiftIsPressed = false;
     bool IsMoveForward = true;
+    UFUNCTION()
+    void OnGroupned(const FHitResult &Hit);
 };

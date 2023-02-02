@@ -43,6 +43,7 @@ void ASTUBaseCharacter::BeginPlay()
     OnHealthChange(HealthComponent->GetHealth());
     HealthComponent->OnDead.AddUObject(this, &ASTUBaseCharacter::CharacterIsDead);
     HealthComponent->OnHealthChange.AddUObject(this, &ASTUBaseCharacter::OnHealthChange);
+    LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroupned);
 }
 
 // Called every frame
@@ -110,4 +111,15 @@ void ASTUBaseCharacter::SetShiftValue()
 {
 
     ShiftIsPressed = !ShiftIsPressed;
+}
+
+void ASTUBaseCharacter::OnGroupned(const FHitResult &Hit)
+{
+    float Velocity = -GetVelocity().Z;
+
+    if (Velocity <= LandedDamageVelocity.X)
+        return;
+
+    float FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, Velocity);
+    TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 }
