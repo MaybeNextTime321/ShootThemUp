@@ -7,6 +7,7 @@
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(CharacterLog, All, All)
@@ -90,7 +91,7 @@ void ASTUBaseCharacter::CharacterIsDead()
 {
     PlayAnimMontage(AnimMontage);
     GetCharacterMovement()->DisableMovement();
-
+    Controller->ChangeState(NAME_Spectating);
     SetLifeSpan(5.0f);
 }
 
