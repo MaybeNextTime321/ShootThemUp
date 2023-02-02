@@ -1,7 +1,9 @@
 // Shoot Them Up. Project from Udemy course
 
 #include "Components/STUHealthComponent.h"
+#include "Engine/Engine.h"
 #include "GameFramework/Actor.h"
+#include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HealthComponentLog, All, All)
 
@@ -19,12 +21,26 @@ USTUHealthComponent::USTUHealthComponent()
 void USTUHealthComponent::BeginPlay()
 {
     Super::BeginPlay();
-
-    Health = MaxHealth;
+    World = GetWorld();
+    SetHealth(MaxHealth);
     AActor *Owner = GetOwner();
-    OnHealthChange.Broadcast(Health);
     Owner->OnTakeAnyDamage.AddDynamic(this, &USTUHealthComponent::OnTakeAnyDamage);
     // ...
+}
+
+void USTUHealthComponent::OnAutoHeal()
+{
+
+    SetHealth(Health + AutoHealValue);
+
+    if (Health == MaxHealth)
+        StopAutoHeal();
+}
+
+void USTUHealthComponent::SetHealth(float NewHealth)
+{
+    Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+    OnHealthChange.Broadcast(Health);
 }
 
 void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType,
@@ -34,8 +50,24 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, co
     if (Damage == 0.0f || IsDead())
         return;
 
-    Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
+    if (HealTimer.IsValid())
+        StopAutoHeal();
+
+    SetHealth(Health - Damage);
+
     if (IsDead())
         OnDead.Broadcast();
-    OnHealthChange.Broadcast(Health);
+
+    else if (Autoheal)
+        StartAutoHeal();
+}
+
+void USTUHealthComponent::StartAutoHeal()
+{
+    World->GetTimerManager().SetTimer(HealTimer, this, &USTUHealthComponent::OnAutoHeal, TimerRate, true, TimerDelay);
+}
+
+void USTUHealthComponent::StopAutoHeal()
+{
+    World->GetTimerManager().ClearTimer(HealTimer);
 }
