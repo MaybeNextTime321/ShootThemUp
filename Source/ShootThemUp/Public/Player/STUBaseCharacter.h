@@ -10,6 +10,7 @@
 class UCameraComponent;
 class USTUHealthComponent;
 class UTextRenderComponent;
+class ASTUBaseWeaponActor;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -58,6 +59,9 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(EditAnyWhere, Category = "Animation")
     UAnimMontage *AnimMontage;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    TSubclassOf<ASTUBaseWeaponActor> BaseWeapon;
+
   private:
     UFUNCTION()
     void OnHealthChange(float HP);
@@ -67,6 +71,8 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     void SetShiftValue();
     bool ShiftIsPressed = false;
     bool IsMoveForward = true;
+
     UFUNCTION()
     void OnGroupned(const FHitResult &Hit);
+    void SpawnWeapon();
 };
