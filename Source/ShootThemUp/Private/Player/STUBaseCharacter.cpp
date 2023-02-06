@@ -25,6 +25,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer &ObjInit)
     SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
     SpringArmComp->bUsePawnControlRotation = true;
     SpringArmComp->SetupAttachment(GetRootComponent());
+    SpringArmComp->SocketOffset = FVector(0.0f, 100.0f, 80.0f);
 
     CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
     CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
@@ -35,6 +36,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer &ObjInit)
 
     TextRenderComponent = CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
     TextRenderComponent->SetupAttachment(GetRootComponent());
+    TextRenderComponent->SetOwnerNoSee(true);
 }
 
 // Called when the game starts or when spawned
