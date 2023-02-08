@@ -22,4 +22,5 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     virtual void BeginPlay() override;
 
   public:
+    virtual void Fire();
 };

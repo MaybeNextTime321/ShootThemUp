@@ -11,6 +11,7 @@ class UCameraComponent;
 class USTUHealthComponent;
 class UTextRenderComponent;
 class ASTUBaseWeaponActor;
+class USTUWeaponComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -37,6 +38,9 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
     UTextRenderComponent *TextRenderComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+    USTUWeaponComponent *WeaponComponent;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
     FVector2D LandedDamageVelocity = {900, 1200};
 
@@ -59,9 +63,6 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(EditAnyWhere, Category = "Animation")
     UAnimMontage *AnimMontage;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TSubclassOf<ASTUBaseWeaponActor> BaseWeapon;
-
   private:
     UFUNCTION()
     void OnHealthChange(float HP);
@@ -74,5 +75,4 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
     UFUNCTION()
     void OnGroupned(const FHitResult &Hit);
-    void SpawnWeapon();
 };

@@ -3,6 +3,7 @@
 #include "STUBaseWeaponActor.h"
 #include "Components/SkeletalMeshComponent.h"
 
+DEFINE_LOG_CATEGORY_STATIC(BaseWeaponLog, All, All)
 // Sets default values
 ASTUBaseWeaponActor::ASTUBaseWeaponActor()
 {
@@ -17,4 +18,9 @@ ASTUBaseWeaponActor::ASTUBaseWeaponActor()
 void ASTUBaseWeaponActor::BeginPlay()
 {
     Super::BeginPlay();
+}
+
+void ASTUBaseWeaponActor::Fire()
+{
+    UE_LOG(BaseWeaponLog, Display, TEXT("FIRE"));
 }
