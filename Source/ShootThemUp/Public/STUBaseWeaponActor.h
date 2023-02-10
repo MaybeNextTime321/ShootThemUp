@@ -19,8 +19,12 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
     USkeletalMeshComponent *SkeletalMesh;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+    float ShootDistance = 1500;
+
     virtual void BeginPlay() override;
 
   public:
     virtual void Fire();
+    void MakeShoot();
 };

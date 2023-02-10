@@ -26,6 +26,7 @@ void USTUWeaponComponent::SpawnWeapon()
     CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeaponActor>(WeaponClass);
     FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
     CurrentWeapon->AttachToComponent(OwnerCharacter->GetMesh(), AttachmentRules, WeaponSoket);
+    CurrentWeapon->SetOwner(OwnerCharacter);
 }
 
 void USTUWeaponComponent::Fire()
