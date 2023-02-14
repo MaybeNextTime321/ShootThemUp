@@ -24,42 +24,62 @@ void ASTUBaseWeaponActor::BeginPlay()
 
 void ASTUBaseWeaponActor::Fire()
 {
-    UE_LOG(BaseWeaponLog, Display, TEXT("FIRE"));
     MakeShoot();
 }
 
 void ASTUBaseWeaponActor::MakeShoot()
 {
-    FVector Location;
-    FRotator Rotation;
 
-    ACharacter *CharacterOwner = Cast<ACharacter>(GetOwner());
-    CharacterOwner->Controller->GetPlayerViewPoint(Location, Rotation);
+    FVector LineStart, SoketForward, LineEnd;
 
-    FVector LineStart = Location;
-    // SkeletalMesh->GetSocketLocation("MuzzleSoket");
-    FVector SoketForward = Rotation.Vector();
-    // SkeletalMesh->GetSocketQuaternion("MuzzleSoket").GetForwardVector();
-    FVector LineEnd = LineStart + SoketForward * ShootDistance;
+    GetTraceData(LineStart, SoketForward, LineEnd);
 
     FHitResult HitResult;
-    FCollisionQueryParams CollisionParams;
-    CollisionParams.AddIgnoredActor(GetOwner());
+    MakeHit(LineStart, LineEnd, HitResult);
 
-    GetWorld()->LineTraceSingleByChannel(HitResult, LineStart, LineEnd, ECollisionChannel::ECC_Visibility,
-                                         CollisionParams);
     if (HitResult.bBlockingHit)
     {
-        DrawDebugLine(GetWorld(), SkeletalMesh->GetSocketLocation("MuzzleSoket"), HitResult.ImpactPoint, FColor::Blue,
-                      false, 3.0f, 0, 3.0f);
+        DrawDebugLine(GetWorld(), GetSoketLocation(), HitResult.ImpactPoint, FColor::Blue, false, 3.0f, 0, 3.0f);
         DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
-
-        UE_LOG(BaseWeaponLog, Display, TEXT("Bone on road : %s"), *HitResult.BoneName.ToString());
     }
     else
     {
-
-        DrawDebugLine(GetWorld(), SkeletalMesh->GetSocketLocation("MuzzleSoket"), LineEnd, FColor::Blue, false, 3.0f, 0,
-                      3.0f);
+        DrawDebugLine(GetWorld(), GetSoketLocation(), LineEnd, FColor::Blue, false, 3.0f, 0, 3.0f);
     }
+}
+
+bool ASTUBaseWeaponActor::GetPlayerViewPoint(FVector &Location, FRotator &Rotation)
+{
+    ACharacter *CharacterOwner = Cast<ACharacter>(GetOwner());
+    CharacterOwner->Controller->GetPlayerViewPoint(Location, Rotation);
+    return true;
+}
+
+FVector ASTUBaseWeaponActor::GetSoketLocation()
+{
+    return SkeletalMesh->GetSocketLocation("MuzzleSoket");
+}
+
+bool ASTUBaseWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd)
+{
+    FVector Location;
+    FRotator Rotation;
+
+    GetPlayerViewPoint(Location, Rotation);
+
+    TraceStart = Location;
+    SoketForward = Rotation.Vector();
+    TraceEnd = TraceStart + SoketForward * ShootDistance;
+    return true;
+}
+
+bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)
+{
+
+    FCollisionQueryParams CollisionParams;
+    CollisionParams.AddIgnoredActor(GetOwner());
+
+    GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility,
+                                         CollisionParams);
+    return true;
 }
