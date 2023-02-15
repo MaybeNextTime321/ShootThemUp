@@ -2,6 +2,7 @@
 
 #include "Player/STUBaseCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUHealthComponent.h"
@@ -100,6 +101,8 @@ void ASTUBaseCharacter::CharacterIsDead()
     GetCharacterMovement()->DisableMovement();
     Controller->ChangeState(NAME_Spectating);
     SetLifeSpan(5.0f);
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+    WeaponComponent->DestuctWeapon();
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)

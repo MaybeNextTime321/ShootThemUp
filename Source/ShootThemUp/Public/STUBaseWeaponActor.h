@@ -22,15 +22,20 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
     float ShootDistance = 1500;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+    float DamageValue = 10.0f;
+
     virtual void BeginPlay() override;
 
   public:
     virtual void Fire();
     void MakeShoot();
+    virtual void DestructWeapon();
 
   private:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
     FVector GetSoketLocation();
     bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd);
     bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
+    void MakeHit(FHitResult HitResult);
 };

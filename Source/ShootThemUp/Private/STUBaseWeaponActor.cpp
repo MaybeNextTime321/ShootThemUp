@@ -4,6 +4,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
+#include "Player/STUBaseCharacter.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseWeaponLog, All, All)
 // Sets default values
@@ -41,11 +42,21 @@ void ASTUBaseWeaponActor::MakeShoot()
     {
         DrawDebugLine(GetWorld(), GetSoketLocation(), HitResult.ImpactPoint, FColor::Blue, false, 3.0f, 0, 3.0f);
         DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
+
+        if (HitResult.Actor.IsValid())
+        {
+            MakeHit(HitResult);
+        }
     }
     else
     {
         DrawDebugLine(GetWorld(), GetSoketLocation(), LineEnd, FColor::Blue, false, 3.0f, 0, 3.0f);
     }
+}
+
+void ASTUBaseWeaponActor::DestructWeapon()
+{
+    SetLifeSpan(5.0f);
 }
 
 bool ASTUBaseWeaponActor::GetPlayerViewPoint(FVector &Location, FRotator &Rotation)
@@ -82,4 +93,12 @@ bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitRe
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility,
                                          CollisionParams);
     return true;
+}
+
+void ASTUBaseWeaponActor::MakeHit(FHitResult HitResult)
+{
+    ASTUBaseCharacter *Character = Cast<ASTUBaseCharacter>(HitResult.Actor);
+    if (!Character)
+        return;
+    Character->TakeDamage(DamageValue, FDamageEvent{}, Character->Controller, GetOwner());
 }

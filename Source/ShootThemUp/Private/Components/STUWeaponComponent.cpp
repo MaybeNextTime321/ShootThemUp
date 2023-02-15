@@ -2,6 +2,7 @@
 
 #include "Components/STUWeaponComponent.h"
 #include "GameFramework/Character.h"
+#include "Player/STUBaseCharacter.h"
 #include "STUBaseWeaponActor.h"
 
 // Sets default values for this component's properties
@@ -32,4 +33,9 @@ void USTUWeaponComponent::SpawnWeapon()
 void USTUWeaponComponent::Fire()
 {
     CurrentWeapon->Fire();
+}
+
+void USTUWeaponComponent::DestuctWeapon()
+{
+    CurrentWeapon->DestructWeapon();
 }
