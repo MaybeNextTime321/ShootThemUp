@@ -25,10 +25,17 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
     float DamageValue = 10.0f;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+    float ShootTimer = 0.1f;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+    float HalfRad = 1.5f;
+
     virtual void BeginPlay() override;
 
   public:
-    virtual void Fire();
+    virtual void StartFire();
+    virtual void EndFire();
     void MakeShoot();
     virtual void DestructWeapon();
 
@@ -38,4 +45,5 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd);
     bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
     void MakeHit(FHitResult HitResult);
+    FTimerHandle TimerHandle;
 };

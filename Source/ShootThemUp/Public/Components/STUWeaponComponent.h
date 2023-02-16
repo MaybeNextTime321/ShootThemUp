@@ -16,7 +16,8 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
   public:
     // Sets default values for this component's properties
     USTUWeaponComponent();
-    void Fire();
+    void StartFire();
+    void EndFire();
     void DestuctWeapon();
 
   protected:
