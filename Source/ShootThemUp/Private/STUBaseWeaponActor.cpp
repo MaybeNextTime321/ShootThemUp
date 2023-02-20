@@ -25,39 +25,14 @@ void ASTUBaseWeaponActor::BeginPlay()
 
 void ASTUBaseWeaponActor::StartFire()
 {
-    MakeShoot();
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &ASTUBaseWeaponActor::MakeShoot, ShootTimer, true);
 }
 
 void ASTUBaseWeaponActor::EndFire()
 {
-    GetWorldTimerManager().ClearTimer(TimerHandle);
 }
 
 void ASTUBaseWeaponActor::MakeShoot()
 {
-
-    FVector LineStart, SoketForward, LineEnd;
-
-    GetTraceData(LineStart, SoketForward, LineEnd);
-
-    FHitResult HitResult;
-    MakeHit(LineStart, LineEnd, HitResult);
-
-    if (HitResult.bBlockingHit)
-    {
-        DrawDebugLine(GetWorld(), GetSoketLocation(), HitResult.ImpactPoint, FColor::Blue, false, 3.0f, 0, 3.0f);
-        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
-
-        if (HitResult.Actor.IsValid())
-        {
-            MakeHit(HitResult);
-        }
-    }
-    else
-    {
-        DrawDebugLine(GetWorld(), GetSoketLocation(), LineEnd, FColor::Blue, false, 3.0f, 0, 3.0f);
-    }
 }
 
 void ASTUBaseWeaponActor::DestructWeapon()
@@ -87,26 +62,7 @@ bool ASTUBaseWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForwar
     TraceStart = Location;
 
     const auto ConeHalfRad = FMath::DegreesToRadians(HalfRad);
-    SoketForward = FMath::VRandCone(Rotation.Vector(), ConeHalfRad);
+    SoketForward = Rotation.Vector();
     TraceEnd = TraceStart + SoketForward * ShootDistance;
     return true;
-}
-
-bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)
-{
-
-    FCollisionQueryParams CollisionParams;
-    CollisionParams.AddIgnoredActor(GetOwner());
-
-    GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility,
-                                         CollisionParams);
-    return true;
-}
-
-void ASTUBaseWeaponActor::MakeHit(FHitResult HitResult)
-{
-    ASTUBaseCharacter *Character = Cast<ASTUBaseCharacter>(HitResult.Actor);
-    if (!Character)
-        return;
-    Character->TakeDamage(DamageValue, FDamageEvent{}, Character->Controller, GetOwner());
 }

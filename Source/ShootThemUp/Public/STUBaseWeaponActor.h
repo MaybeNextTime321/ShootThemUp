@@ -36,14 +36,11 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
   public:
     virtual void StartFire();
     virtual void EndFire();
-    void MakeShoot();
+    virtual void MakeShoot();
     virtual void DestructWeapon();
 
-  private:
+  protected:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
     FVector GetSoketLocation();
-    bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd);
-    bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
-    void MakeHit(FHitResult HitResult);
-    FTimerHandle TimerHandle;
+    virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd);
 };
