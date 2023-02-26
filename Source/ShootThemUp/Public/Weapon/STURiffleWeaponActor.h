@@ -24,6 +24,5 @@ class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd) override;
 
   private:
-    bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
-    void MakeHit(FHitResult HitResult);
+    void MakeHitWithDamage(FHitResult HitResult);
 };

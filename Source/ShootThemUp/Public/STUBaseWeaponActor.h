@@ -38,6 +38,7 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     virtual void EndFire();
     virtual void MakeShoot();
     virtual void DestructWeapon();
+    bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
 
   protected:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);

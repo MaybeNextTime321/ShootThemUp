@@ -3,6 +3,7 @@
 #include "Weapon/STURiffleWeaponActor.h"
 #include <DrawDebugHelpers.h>
 #include <STUBaseCharacter.h>
+#include <STUBaseWeaponActor.h>
 
 void ASTURiffleWeaponActor::StartFire()
 {
@@ -32,7 +33,7 @@ void ASTURiffleWeaponActor::MakeShoot()
 
         if (HitResult.Actor.IsValid())
         {
-            MakeHit(HitResult);
+            MakeHitWithDamage(HitResult);
         }
     }
     else
@@ -55,18 +56,8 @@ bool ASTURiffleWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForw
     TraceEnd = TraceStart + SoketForward * ShootDistance;
     return true;
 }
-bool ASTURiffleWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)
-{
 
-    FCollisionQueryParams CollisionParams;
-    CollisionParams.AddIgnoredActor(GetOwner());
-
-    GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility,
-                                         CollisionParams);
-    return true;
-}
-
-void ASTURiffleWeaponActor::MakeHit(FHitResult HitResult)
+void ASTURiffleWeaponActor::MakeHitWithDamage(FHitResult HitResult)
 {
     ASTUBaseCharacter *Character = Cast<ASTUBaseCharacter>(HitResult.Actor);
     if (!Character)
