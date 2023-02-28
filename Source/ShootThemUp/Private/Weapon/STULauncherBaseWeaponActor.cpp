@@ -28,6 +28,7 @@ void ASTULauncherBaseWeaponActor::MakeShoot()
     if (Projectile)
     {
         Projectile->SetShootDirection(Direction);
+        Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
     }
 }

@@ -34,6 +34,24 @@ class SHOOTTHEMUP_API ASTUProjectile : public AActor
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     USphereComponent *CollisionComponent;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    float SphereRadius = 200.0f;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    float LiveSpan = 5.0f;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    float Damage = 50.0f;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    bool ApplyAllDamage = false;
+
   private:
     FVector ShootVector;
+
+    UFUNCTION()
+    void OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,
+               FVector NormalImpulse, const FHitResult &Hit);
+
+    AController *GetController() const;
 };
