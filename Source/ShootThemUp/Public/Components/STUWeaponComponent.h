@@ -19,18 +19,30 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void StartFire();
     void EndFire();
     void DestuctWeapon();
+    void NextWeapon();
 
   protected:
     // Called when the game starts
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-    FName WeaponSoket = "WeaponPoint";
+    FName WeaponEquipSoket = "WeaponPoint";
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+    FName WeaponArmorySoket = "ArmorySocket";
+
+    UPROPERTY()
+    TArray<ASTUBaseWeaponActor *> Weapons;
+
+    int32 CurrentWeaponIndex = 0;
 
     virtual void BeginPlay() override;
-    void SpawnWeapon();
+    void SpawnWeapons();
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TSubclassOf<ASTUBaseWeaponActor> WeaponClass;
+    TArray<TSubclassOf<ASTUBaseWeaponActor>> WeaponClass;
 
     UPROPERTY()
     ASTUBaseWeaponActor *CurrentWeapon;
+
+    void AttachWeaponToSoket(ASTUBaseWeaponActor *Weapon, USceneComponent *SceneComponent, FName SoketName);
+    void EquipWeapon(int32 WeaponIndex);
 };

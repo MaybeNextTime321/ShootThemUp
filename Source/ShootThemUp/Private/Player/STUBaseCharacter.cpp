@@ -72,6 +72,7 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCo
     PlayerInputComponent->BindAction("Shift is Pressed", IE_Released, this, &ASTUBaseCharacter::SetShiftValue);
     PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::StartFire);
     PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::EndFire);
+    PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
 }
 
 bool ASTUBaseCharacter::IsRunning() const
