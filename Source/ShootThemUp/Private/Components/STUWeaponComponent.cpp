@@ -1,9 +1,12 @@
 // Shoot Them Up. Project from Udemy course
 
 #include "Components/STUWeaponComponent.h"
+#include "Animation/STUEquipAnimNotify.h"
 #include "GameFramework/Character.h"
 #include "Player/STUBaseCharacter.h"
 #include "STUBaseWeaponActor.h"
+
+DEFINE_LOG_CATEGORY_STATIC(WeaponComponentLog, All, All)
 
 // Sets default values for this component's properties
 USTUWeaponComponent::USTUWeaponComponent()
@@ -22,6 +25,7 @@ void USTUWeaponComponent::BeginPlay()
 
     CurrentWeaponIndex = 0;
     EquipWeapon(CurrentWeaponIndex);
+    InitAnimation();
 }
 
 void USTUWeaponComponent::SpawnWeapons()
@@ -46,6 +50,7 @@ void USTUWeaponComponent::AttachWeaponToSoket(ASTUBaseWeaponActor *Weapon, UScen
 
 void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
+    WeaponChangeInProgress = true;
     ACharacter *OwnerCharacter = Cast<ACharacter>(GetOwner());
     if (CurrentWeapon)
     {
@@ -55,17 +60,61 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 
     CurrentWeapon = Weapons[WeaponIndex];
     AttachWeaponToSoket(CurrentWeapon, OwnerCharacter->GetMesh(), WeaponEquipSoket);
+    LaunchAnimMontage(EquipAnimMontage);
+}
+
+void USTUWeaponComponent::LaunchAnimMontage(UAnimMontage *AnimMontage)
+{
+    ACharacter *OwnerCharacter = Cast<ACharacter>(GetOwner());
+    OwnerCharacter->PlayAnimMontage(AnimMontage);
+}
+
+void USTUWeaponComponent::InitAnimation()
+{
+
+    const TArray<FAnimNotifyEvent> NotifyEvents = EquipAnimMontage->Notifies;
+    for (FAnimNotifyEvent NotifyEvent : NotifyEvents)
+    {
+        USTUEquipAnimNotify *EquipNotifyFinish = Cast<USTUEquipAnimNotify>(NotifyEvent.Notify);
+        if (EquipNotifyFinish)
+        {
+            EquipNotifyFinish->OnNotified.AddUObject(this, &USTUWeaponComponent::OnEquipFinished);
+            break;
+        }
+    }
+}
+
+void USTUWeaponComponent::OnEquipFinished(USkeletalMeshComponent *MeshComponent)
+{
+    auto Character = Cast<ASTUBaseCharacter>(GetOwner());
+
+    if (Character && Character->GetMesh() == MeshComponent)
+        WeaponChangeInProgress = false;
+}
+
+bool USTUWeaponComponent::CanFire() const
+{
+    return (CurrentWeapon && !WeaponChangeInProgress);
+}
+
+bool USTUWeaponComponent::CanEquip() const
+{
+    return !WeaponChangeInProgress;
 }
 
 void USTUWeaponComponent::NextWeapon()
 {
-    CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
-    EquipWeapon(CurrentWeaponIndex);
+    if (CanEquip())
+    {
+        CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
+        EquipWeapon(CurrentWeaponIndex);
+    }
 }
 
 void USTUWeaponComponent::StartFire()
 {
-    CurrentWeapon->StartFire();
+    if (CanFire())
+        CurrentWeapon->StartFire();
 }
 
 void USTUWeaponComponent::EndFire()
