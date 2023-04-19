@@ -5,11 +5,15 @@
 
 void ASTULauncherBaseWeaponActor::StartFire()
 {
+
     MakeShoot();
 }
 
 void ASTULauncherBaseWeaponActor::MakeShoot()
 {
+    if (IsAmmoEmpty())
+        return;
+    DecreaseAmmo();
     const FVector SoketLocation = GetSoketLocation();
 
     const FTransform SpawnTransform = FTransform(FRotator::ZeroRotator, SoketLocation);

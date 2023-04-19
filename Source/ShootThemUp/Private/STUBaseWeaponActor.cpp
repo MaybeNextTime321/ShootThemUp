@@ -21,6 +21,7 @@ ASTUBaseWeaponActor::ASTUBaseWeaponActor()
 void ASTUBaseWeaponActor::BeginPlay()
 {
     Super::BeginPlay();
+    CurrentAmmo = DefaultAmmo;
 }
 
 void ASTUBaseWeaponActor::StartFire()
@@ -66,6 +67,41 @@ bool ASTUBaseWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForwar
     TraceEnd = TraceStart + SoketForward * ShootDistance;
     return true;
 }
+
+void ASTUBaseWeaponActor::DecreaseAmmo()
+{
+    --CurrentAmmo.Bullet;
+    LogAmmo();
+
+    if (IsClipEmpty() && !IsAmmoEmpty())
+        ChangeClip();
+}
+
+bool ASTUBaseWeaponActor::IsAmmoEmpty()
+{
+
+    return (!CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && CurrentAmmo.Bullet == 0);
+}
+
+bool ASTUBaseWeaponActor::IsClipEmpty()
+{
+    return CurrentAmmo.Bullet == 0;
+}
+
+void ASTUBaseWeaponActor::LogAmmo()
+{
+    FString ShowAmmo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullet) + " / ";
+    ShowAmmo += CurrentAmmo.Infinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips) + " Clips";
+    UE_LOG(BaseWeaponLog, Display, TEXT("%s"), *ShowAmmo);
+}
+
+void ASTUBaseWeaponActor::ChangeClip()
+{
+    CurrentAmmo.Bullet = DefaultAmmo.Bullet;
+    if (!CurrentAmmo.Infinite)
+        --CurrentAmmo.Clips;
+}
+
 bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)
 {
 

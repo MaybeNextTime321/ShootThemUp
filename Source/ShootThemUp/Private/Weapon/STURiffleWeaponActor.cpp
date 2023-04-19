@@ -18,7 +18,9 @@ void ASTURiffleWeaponActor::EndFire()
 
 void ASTURiffleWeaponActor::MakeShoot()
 {
-
+    if (IsAmmoEmpty())
+        return;
+    DecreaseAmmo();
     FVector LineStart, SoketForward, LineEnd;
 
     GetTraceData(LineStart, SoketForward, LineEnd);

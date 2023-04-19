@@ -5,9 +5,24 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "STUBaseWeaponActor.generated.h"
+class USkeletalMeshComponent;
 
-UCLASS()
-class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
+USTRUCT(BlueprintType)
+struct FAmmoData
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    int32 Bullet;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    int32 Clips;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    bool Infinite;
+};
+
+UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 {
     GENERATED_BODY()
 
@@ -31,6 +46,9 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
     float HalfRad = 1.5f;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    FAmmoData DefaultAmmo{15, 10, false};
+
     virtual void BeginPlay() override;
 
   public:
@@ -44,4 +62,12 @@ class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
     FVector GetSoketLocation();
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd);
+    void DecreaseAmmo();
+    bool IsAmmoEmpty();
+    bool IsClipEmpty();
+    void LogAmmo();
+    void ChangeClip();
+
+  private:
+    FAmmoData CurrentAmmo;
 };
