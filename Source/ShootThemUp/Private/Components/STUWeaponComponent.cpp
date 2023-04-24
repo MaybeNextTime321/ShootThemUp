@@ -32,9 +32,9 @@ void USTUWeaponComponent::SpawnWeapons()
 {
     ACharacter *OwnerCharacter = Cast<ACharacter>(GetOwner());
 
-    for (auto Weapon : WeaponClass)
+    for (auto OneWeapon : WeaponComponent)
     {
-        CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeaponActor>(Weapon);
+        CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeaponActor>(OneWeapon.WeaponClass);
         CurrentWeapon->SetOwner(OwnerCharacter);
         Weapons.Add(CurrentWeapon);
 
@@ -50,6 +50,11 @@ void USTUWeaponComponent::AttachWeaponToSoket(ASTUBaseWeaponActor *Weapon, UScen
 
 void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
 {
+    if (WeaponIndex < 0 && WeaponIndex > WeaponComponent.Num())
+    {
+        UE_LOG(WeaponComponentLog, Warning, TEXT("Invalid Weapon Index"));
+        return;
+    }
     WeaponChangeInProgress = true;
     ACharacter *OwnerCharacter = Cast<ACharacter>(GetOwner());
     if (CurrentWeapon)
@@ -59,6 +64,7 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
     }
 
     CurrentWeapon = Weapons[WeaponIndex];
+    CurrentReloadAnimMontage = WeaponComponent[WeaponIndex].ReloadMontage;
     AttachWeaponToSoket(CurrentWeapon, OwnerCharacter->GetMesh(), WeaponEquipSoket);
     LaunchAnimMontage(EquipAnimMontage);
 }
@@ -100,6 +106,12 @@ bool USTUWeaponComponent::CanFire() const
 bool USTUWeaponComponent::CanEquip() const
 {
     return !WeaponChangeInProgress;
+}
+
+void USTUWeaponComponent::Reload()
+{
+
+    LaunchAnimMontage(CurrentReloadAnimMontage);
 }
 
 void USTUWeaponComponent::NextWeapon()

@@ -8,6 +8,19 @@
 
 class ASTUBaseWeaponActor;
 
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+    GENERATED_USTRUCT_BODY()
+
+  public:
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    TSubclassOf<ASTUBaseWeaponActor> WeaponClass;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon");
+    UAnimMontage *ReloadMontage;
+};
+
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
 {
@@ -20,6 +33,7 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void EndFire();
     void DestuctWeapon();
     void NextWeapon();
+    void Reload();
 
   protected:
     // Called when the game starts
@@ -37,8 +51,11 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     virtual void BeginPlay() override;
     void SpawnWeapons();
 
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon");
+    UAnimMontage *CurrentReloadAnimMontage = nullptr;
+
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TArray<TSubclassOf<ASTUBaseWeaponActor>> WeaponClass;
+    TArray<FWeaponData> WeaponComponent;
 
     UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage *EquipAnimMontage;
