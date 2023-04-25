@@ -70,7 +70,25 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void LaunchAnimMontage(UAnimMontage *AnimMontage);
     void InitAnimation();
     void OnEquipFinished(USkeletalMeshComponent *MeshComponent);
+    void OnReloadFinished(USkeletalMeshComponent *MeshComponent);
     bool WeaponChangeInProgress = false;
-    bool CanFire() const;
+    bool WeaponReloadInProgress = false;
+    bool CanFireAndReload() const;
     bool CanEquip() const;
+
+    template <typename T> T *FindNotifyByClass(UAnimSequenceBase *Animation)
+    {
+        if (!Animation)
+            return nullptr;
+        const TArray<FAnimNotifyEvent> NotifyEvents = Animation->Notifies;
+        for (FAnimNotifyEvent NotifyEvent : NotifyEvents)
+        {
+            auto AnimNotify = Cast<T>(NotifyEvent.Notify);
+            if (AnimNotify)
+            {
+                return AnimNotify;
+            }
+        }
+        return nullptr;
+    }
 };
