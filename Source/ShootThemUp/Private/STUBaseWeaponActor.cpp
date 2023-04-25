@@ -22,6 +22,9 @@ void ASTUBaseWeaponActor::BeginPlay()
 {
     Super::BeginPlay();
     CurrentAmmo = DefaultAmmo;
+    check(SkeletalMesh);
+    checkf(DefaultAmmo.Bullet > 0, TEXT("Default Ammo Bullet must be > 0"));
+    checkf(DefaultAmmo.Clips > 0, TEXT("Default Ammo Clips must be > 0"));
 }
 
 void ASTUBaseWeaponActor::StartFire()

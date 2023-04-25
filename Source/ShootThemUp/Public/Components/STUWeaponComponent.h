@@ -4,22 +4,10 @@
 
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "STUWeaponComponent.generated.h"
 
 class ASTUBaseWeaponActor;
-
-USTRUCT(BlueprintType)
-struct FWeaponData
-{
-    GENERATED_USTRUCT_BODY()
-
-  public:
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TSubclassOf<ASTUBaseWeaponActor> WeaponClass;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon");
-    UAnimMontage *ReloadMontage;
-};
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
@@ -78,19 +66,4 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     bool CanReload() const;
     void OnEmptyClip();
     void ChangeClip();
-    template <typename T> T *FindNotifyByClass(UAnimSequenceBase *Animation)
-    {
-        if (!Animation)
-            return nullptr;
-        const TArray<FAnimNotifyEvent> NotifyEvents = Animation->Notifies;
-        for (FAnimNotifyEvent NotifyEvent : NotifyEvents)
-        {
-            auto AnimNotify = Cast<T>(NotifyEvent.Notify);
-            if (AnimNotify)
-            {
-                return AnimNotify;
-            }
-        }
-        return nullptr;
-    }
 };

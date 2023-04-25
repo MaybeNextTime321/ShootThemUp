@@ -2,27 +2,12 @@
 
 #pragma once
 
+#include "STUCoreTypes.h"
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "STUBaseWeaponActor.generated.h"
 class USkeletalMeshComponent;
-
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
-
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-    GENERATED_USTRUCT_BODY()
-
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    int32 Bullet;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    int32 Clips;
-
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    bool Infinite;
-};
 
 UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 {

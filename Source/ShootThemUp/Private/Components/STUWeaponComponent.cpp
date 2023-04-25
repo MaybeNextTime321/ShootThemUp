@@ -1,6 +1,7 @@
 // Shoot Them Up. Project from Udemy course
 
 #include "Components/STUWeaponComponent.h"
+#include "Animation/AnimUtils.h"
 #include "Animation/STUEquipAnimNotify.h"
 #include "Animation/STUReloadFinishAnimNotify.h"
 #include "GameFramework/Character.h"
@@ -8,6 +9,8 @@
 #include "STUBaseWeaponActor.h"
 
 DEFINE_LOG_CATEGORY_STATIC(WeaponComponentLog, All, All)
+
+constexpr static int32 WeaponNumber = 2;
 
 // Sets default values for this component's properties
 USTUWeaponComponent::USTUWeaponComponent()
@@ -21,9 +24,10 @@ USTUWeaponComponent::USTUWeaponComponent()
 void USTUWeaponComponent::BeginPlay()
 {
     Super::BeginPlay();
+    checkf(WeaponComponent.Num() == WeaponNumber, //
+           TEXT("Our character can have only %i weapon items"), WeaponNumber);
 
     SpawnWeapons();
-
     CurrentWeaponIndex = 0;
     EquipWeapon(CurrentWeaponIndex);
     InitAnimation();
@@ -79,18 +83,28 @@ void USTUWeaponComponent::LaunchAnimMontage(UAnimMontage *AnimMontage)
 void USTUWeaponComponent::InitAnimation()
 {
 
-    USTUEquipAnimNotify *EquipNotifyFinish = FindNotifyByClass<USTUEquipAnimNotify>(EquipAnimMontage);
+    USTUEquipAnimNotify *EquipNotifyFinish = AnimUtils::FindNotifyByClass<USTUEquipAnimNotify>(EquipAnimMontage);
     if (EquipNotifyFinish)
     {
         EquipNotifyFinish->OnNotified.AddUObject(this, &USTUWeaponComponent::OnEquipFinished);
+    }
+    else
+    {
+        UE_LOG(WeaponComponentLog, Error, TEXT("Equip animation is forgotten to set"));
+        checkNoEntry();
     }
 
     for (FWeaponData OneWeaponComponent : WeaponComponent)
     {
         USTUReloadFinishAnimNotify *ReloadNotifyFinish =
-            FindNotifyByClass<USTUReloadFinishAnimNotify>(OneWeaponComponent.ReloadMontage);
+            AnimUtils::FindNotifyByClass<USTUReloadFinishAnimNotify>(OneWeaponComponent.ReloadMontage);
+
         if (!ReloadNotifyFinish)
-            continue;
+        {
+            UE_LOG(WeaponComponentLog, Error, TEXT("Reload animation is forgotten to set"));
+            checkNoEntry();
+        }
+
         ReloadNotifyFinish->OnNotified.AddUObject(this, &USTUWeaponComponent::OnReloadFinished);
     }
 }
