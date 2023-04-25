@@ -26,6 +26,7 @@ void USTUHealthComponent::BeginPlay()
     AActor *Owner = GetOwner();
     Owner->OnTakeAnyDamage.AddDynamic(this, &USTUHealthComponent::OnTakeAnyDamage);
     // ...
+    checkf(MaxHealth > 0, TEXT("Max Helth must be >0"));
 }
 
 void USTUHealthComponent::OnAutoHeal()
