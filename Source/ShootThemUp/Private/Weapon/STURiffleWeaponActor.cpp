@@ -7,8 +7,8 @@
 
 void ASTURiffleWeaponActor::StartFire()
 {
-    MakeShoot();
     GetWorldTimerManager().SetTimer(TimerHandle, this, &ASTURiffleWeaponActor::MakeShoot, ShootTimer, true);
+    MakeShoot();
 }
 
 void ASTURiffleWeaponActor::EndFire()

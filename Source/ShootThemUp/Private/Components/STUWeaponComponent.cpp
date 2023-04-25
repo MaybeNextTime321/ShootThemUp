@@ -38,7 +38,7 @@ void USTUWeaponComponent::SpawnWeapons()
         CurrentWeapon = GetWorld()->SpawnActor<ASTUBaseWeaponActor>(OneWeapon.WeaponClass);
         CurrentWeapon->SetOwner(OwnerCharacter);
         Weapons.Add(CurrentWeapon);
-
+        CurrentWeapon->OnClipEmpty.AddUObject(this, &USTUWeaponComponent::OnEmptyClip);
         AttachWeaponToSoket(CurrentWeapon, OwnerCharacter->GetMesh(), WeaponArmorySoket);
     }
 }
@@ -109,7 +109,7 @@ void USTUWeaponComponent::OnReloadFinished(USkeletalMeshComponent *MeshComponent
         WeaponReloadInProgress = false;
 }
 
-bool USTUWeaponComponent::CanFireAndReload() const
+bool USTUWeaponComponent::CanFire() const
 {
     return (CurrentWeapon && !WeaponChangeInProgress && !WeaponReloadInProgress);
 }
@@ -119,13 +119,32 @@ bool USTUWeaponComponent::CanEquip() const
     return !WeaponChangeInProgress && !WeaponReloadInProgress;
 }
 
-void USTUWeaponComponent::Reload()
+bool USTUWeaponComponent::CanReload() const
 {
-    if (!CanFireAndReload())
+    return (CurrentWeapon              //
+            && !WeaponChangeInProgress //
+            && !WeaponReloadInProgress //
+            && CurrentWeapon->CanReload());
+}
+
+void USTUWeaponComponent::OnEmptyClip()
+{
+    ChangeClip();
+}
+
+void USTUWeaponComponent::ChangeClip()
+{
+    if (!CanReload())
         return;
-    EndFire();
+    CurrentWeapon->EndFire();
+    CurrentWeapon->ChangeClip();
     WeaponReloadInProgress = true;
     LaunchAnimMontage(CurrentReloadAnimMontage);
+}
+
+void USTUWeaponComponent::Reload()
+{
+    ChangeClip();
 }
 
 void USTUWeaponComponent::NextWeapon()
@@ -139,7 +158,7 @@ void USTUWeaponComponent::NextWeapon()
 
 void USTUWeaponComponent::StartFire()
 {
-    if (CanFireAndReload())
+    if (CanFire())
         CurrentWeapon->StartFire();
 }
 

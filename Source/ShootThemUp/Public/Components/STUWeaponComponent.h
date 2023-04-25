@@ -73,9 +73,11 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void OnReloadFinished(USkeletalMeshComponent *MeshComponent);
     bool WeaponChangeInProgress = false;
     bool WeaponReloadInProgress = false;
-    bool CanFireAndReload() const;
+    bool CanFire() const;
     bool CanEquip() const;
-
+    bool CanReload() const;
+    void OnEmptyClip();
+    void ChangeClip();
     template <typename T> T *FindNotifyByClass(UAnimSequenceBase *Animation)
     {
         if (!Animation)

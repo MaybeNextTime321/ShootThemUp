@@ -7,6 +7,8 @@
 #include "STUBaseWeaponActor.generated.h"
 class USkeletalMeshComponent;
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
+
 USTRUCT(BlueprintType)
 struct FAmmoData
 {
@@ -29,6 +31,7 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
   public:
     // Sets default values for this actor's properties
     ASTUBaseWeaponActor();
+    FOnClipEmptySignature OnClipEmpty;
 
   protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
@@ -57,6 +60,8 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     virtual void MakeShoot();
     virtual void DestructWeapon();
     bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
+    void ChangeClip();
+    bool CanReload() const;
 
   protected:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
@@ -66,7 +71,7 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     bool IsAmmoEmpty();
     bool IsClipEmpty();
     void LogAmmo();
-    void ChangeClip();
+    bool ClipsEsEmpty();
 
   private:
     FAmmoData CurrentAmmo;

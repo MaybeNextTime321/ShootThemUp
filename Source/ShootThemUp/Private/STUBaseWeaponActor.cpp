@@ -70,11 +70,17 @@ bool ASTUBaseWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForwar
 
 void ASTUBaseWeaponActor::DecreaseAmmo()
 {
+    if (ClipsEsEmpty())
+        return;
+
     --CurrentAmmo.Bullet;
     LogAmmo();
 
     if (IsClipEmpty() && !IsAmmoEmpty())
-        ChangeClip();
+    {
+        EndFire();
+        OnClipEmpty.Broadcast();
+    }
 }
 
 bool ASTUBaseWeaponActor::IsAmmoEmpty()
@@ -95,11 +101,30 @@ void ASTUBaseWeaponActor::LogAmmo()
     UE_LOG(BaseWeaponLog, Display, TEXT("%s"), *ShowAmmo);
 }
 
+bool ASTUBaseWeaponActor::ClipsEsEmpty()
+{
+    if (CurrentAmmo.Clips == 0)
+    {
+        UE_LOG(BaseWeaponLog, Display, TEXT("No More Clips"))
+        return true;
+    }
+    return false;
+}
+
 void ASTUBaseWeaponActor::ChangeClip()
 {
-    CurrentAmmo.Bullet = DefaultAmmo.Bullet;
     if (!CurrentAmmo.Infinite)
-        --CurrentAmmo.Clips;
+    {
+        if (ClipsEsEmpty())
+            return;
+    }
+    --CurrentAmmo.Clips;
+    CurrentAmmo.Bullet = DefaultAmmo.Bullet;
+}
+
+bool ASTUBaseWeaponActor::CanReload() const
+{
+    return CurrentAmmo.Bullet < DefaultAmmo.Bullet && CurrentAmmo.Clips > 0;
 }
 
 bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)
