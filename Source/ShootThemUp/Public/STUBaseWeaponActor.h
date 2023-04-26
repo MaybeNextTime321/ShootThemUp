@@ -47,6 +47,7 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     bool MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult);
     void ChangeClip();
     bool CanReload() const;
+    FWeaponUIData GetUIData() const;
 
   protected:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
@@ -57,6 +58,9 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     bool IsClipEmpty();
     void LogAmmo();
     bool ClipsEsEmpty();
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    FWeaponUIData WeaponUI;
 
   private:
     FAmmoData CurrentAmmo;

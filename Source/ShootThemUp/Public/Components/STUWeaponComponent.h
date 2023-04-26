@@ -23,6 +23,8 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void NextWeapon();
     void Reload();
 
+    bool GetFWeaponUIData(FWeaponUIData &WeaponUI) const;
+
   protected:
     // Called when the game starts
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")

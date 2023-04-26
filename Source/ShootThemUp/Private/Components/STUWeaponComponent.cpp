@@ -161,6 +161,17 @@ void USTUWeaponComponent::Reload()
     ChangeClip();
 }
 
+bool USTUWeaponComponent::GetFWeaponUIData(FWeaponUIData &WeaponUI) const
+{
+    if (CurrentWeapon)
+    {
+        WeaponUI = CurrentWeapon->GetUIData();
+        return true;
+    }
+    else
+        return false;
+}
+
 void USTUWeaponComponent::NextWeapon()
 {
     if (CanEquip())

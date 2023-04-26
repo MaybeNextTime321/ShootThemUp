@@ -8,7 +8,7 @@ void ASTUHUD::DrawHUD()
 {
 
     Super::DrawHUD();
-    DrawAim();
+    // DrawAim();
 }
 
 void ASTUHUD::BeginPlay()

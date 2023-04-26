@@ -130,6 +130,12 @@ bool ASTUBaseWeaponActor::CanReload() const
     return CurrentAmmo.Bullet < DefaultAmmo.Bullet && CurrentAmmo.Clips > 0;
 }
 
+FWeaponUIData ASTUBaseWeaponActor::GetUIData() const
+{
+
+    return WeaponUI;
+}
+
 bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)
 {
 

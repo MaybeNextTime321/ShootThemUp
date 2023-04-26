@@ -4,6 +4,7 @@
 
 #include "Blueprint/UserWidget.h"
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "STUPlayerHUDWidget.generated.h"
 
 /**
@@ -17,4 +18,7 @@ class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
   public:
     UFUNCTION(BlueprintCallable, Category = "PlayerHUDWidget")
     float GetHealthProcent() const;
+
+    UFUNCTION(BlueprintCallable, Category = "PlayerHUDWidget")
+    bool GetWeaponUIData(FWeaponUIData &WeaponUI);
 };

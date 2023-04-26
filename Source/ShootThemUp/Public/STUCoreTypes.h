@@ -37,3 +37,17 @@ struct FWeaponData
 // health
 DECLARE_MULTICAST_DELEGATE(FOnDeadSignature)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeDamageSignature, float)
+
+    // ui
+
+    USTRUCT(BlueprintType) struct FWeaponUIData
+{
+    GENERATED_USTRUCT_BODY()
+
+  public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    UTexture2D *CrossImage;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    UTexture2D *DefaultImage;
+};
