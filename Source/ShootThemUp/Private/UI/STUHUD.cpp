@@ -1,6 +1,7 @@
 // Shoot Them Up. Project from Udemy course
 
 #include "UI/STUHUD.h"
+#include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
 
 void ASTUHUD::DrawHUD()
@@ -8,6 +9,14 @@ void ASTUHUD::DrawHUD()
 
     Super::DrawHUD();
     DrawAim();
+}
+
+void ASTUHUD::BeginPlay()
+{
+    Super::BeginPlay();
+    UUserWidget *PlayerHUDWidget = CreateWidget(GetWorld(), PlayerHUD);
+    if (PlayerHUDWidget)
+        PlayerHUDWidget->AddToViewport();
 }
 
 void ASTUHUD::DrawAim()
