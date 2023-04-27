@@ -41,6 +41,7 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 
   public:
     virtual void StartFire();
+    FAmmoData GetAmmoData() const;
     virtual void EndFire();
     virtual void MakeShoot();
     virtual void DestructWeapon();
@@ -62,6 +63,6 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     FWeaponUIData WeaponUI;
 
-  private:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     FAmmoData CurrentAmmo;
 };

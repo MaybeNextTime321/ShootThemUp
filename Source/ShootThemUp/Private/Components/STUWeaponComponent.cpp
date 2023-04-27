@@ -161,6 +161,17 @@ void USTUWeaponComponent::Reload()
     ChangeClip();
 }
 
+bool USTUWeaponComponent::GetAmmoData(FAmmoData &WeaponData) const
+{
+    if (CurrentWeapon)
+    {
+        WeaponData = CurrentWeapon->GetAmmoData();
+        return true;
+    }
+    else
+        return false;
+}
+
 bool USTUWeaponComponent::GetFWeaponUIData(FWeaponUIData &WeaponUI) const
 {
     if (CurrentWeapon)

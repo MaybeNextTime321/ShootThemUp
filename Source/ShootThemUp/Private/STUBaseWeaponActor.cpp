@@ -31,6 +31,11 @@ void ASTUBaseWeaponActor::StartFire()
 {
 }
 
+FAmmoData ASTUBaseWeaponActor::GetAmmoData() const
+{
+    return CurrentAmmo;
+}
+
 void ASTUBaseWeaponActor::EndFire()
 {
 }

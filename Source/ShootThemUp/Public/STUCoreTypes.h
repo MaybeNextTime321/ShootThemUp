@@ -9,15 +9,16 @@ DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
 USTRUCT(BlueprintType)
 struct FAmmoData
 {
+  public:
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
     int32 Bullet;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
     int32 Clips;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
     bool Infinite;
 };
 

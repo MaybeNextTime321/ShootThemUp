@@ -22,7 +22,7 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void DestuctWeapon();
     void NextWeapon();
     void Reload();
-
+    bool GetAmmoData(FAmmoData &WeaponData) const;
     bool GetFWeaponUIData(FWeaponUIData &WeaponUI) const;
 
   protected:

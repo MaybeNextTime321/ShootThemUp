@@ -7,6 +7,7 @@
 #include "STUCoreTypes.h"
 #include "STUPlayerHUDWidget.generated.h"
 
+class USTUWeaponComponent;
 /**
  *
  */
@@ -21,4 +22,10 @@ class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
 
     UFUNCTION(BlueprintCallable, Category = "PlayerHUDWidget")
     bool GetWeaponUIData(FWeaponUIData &WeaponUI);
+
+    UFUNCTION(BlueprintCallable, Category = "PlayerHUDWidget")
+    bool GetAmmoData(FAmmoData &WeaponData);
+
+  private:
+    const USTUWeaponComponent *GetWeaponComponent();
 };
