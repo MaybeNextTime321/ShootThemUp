@@ -6,12 +6,8 @@
 
 float USTUPlayerHUDWidget::GetHealthProcent() const
 {
-    const APawn *Pawn = GetOwningPlayerPawn();
-    if (!Pawn)
-        return 0.0f;
 
-    const UActorComponent *Component = Pawn->GetComponentByClass(USTUHealthComponent::StaticClass());
-    const USTUHealthComponent *HealthComponent = Cast<USTUHealthComponent>(Component);
+    const USTUHealthComponent *HealthComponent = GetHealthComponent();
 
     if (HealthComponent)
         return HealthComponent->GetHealthProcent();
@@ -21,7 +17,7 @@ float USTUPlayerHUDWidget::GetHealthProcent() const
 
 bool USTUPlayerHUDWidget::GetWeaponUIData(FWeaponUIData &WeaponUI)
 {
-    const auto *WeaponComponent = GetWeaponComponent();
+    const USTUWeaponComponent *WeaponComponent = GetWeaponComponent();
 
     if (!WeaponComponent)
         return false;
@@ -31,7 +27,7 @@ bool USTUPlayerHUDWidget::GetWeaponUIData(FWeaponUIData &WeaponUI)
 
 bool USTUPlayerHUDWidget::GetAmmoData(FAmmoData &WeaponData)
 {
-    const auto *WeaponComponent = GetWeaponComponent();
+    const USTUWeaponComponent *WeaponComponent = GetWeaponComponent();
 
     if (!WeaponComponent)
         return false;
@@ -39,7 +35,20 @@ bool USTUPlayerHUDWidget::GetAmmoData(FAmmoData &WeaponData)
     return WeaponComponent->GetAmmoData(WeaponData);
 }
 
-const USTUWeaponComponent *USTUPlayerHUDWidget::GetWeaponComponent()
+bool USTUPlayerHUDWidget::IsAlive() const
+{
+    const USTUHealthComponent *HealthComponent = GetHealthComponent();
+
+    return HealthComponent && !HealthComponent->IsDead();
+}
+
+bool USTUPlayerHUDWidget::IsSpectating() const
+{
+    const auto Controler = GetOwningPlayer();
+    return Controler && Controler->GetStateName() == NAME_Spectating;
+}
+
+const USTUWeaponComponent *USTUPlayerHUDWidget::GetWeaponComponent() const
 {
     const APawn *Pawn = GetOwningPlayerPawn();
     if (!Pawn)
@@ -48,4 +57,15 @@ const USTUWeaponComponent *USTUPlayerHUDWidget::GetWeaponComponent()
     const auto *WeaponComponent = Cast<USTUWeaponComponent>(Component);
 
     return WeaponComponent;
+}
+
+const USTUHealthComponent *USTUPlayerHUDWidget::GetHealthComponent() const
+{
+    const APawn *Pawn = GetOwningPlayerPawn();
+    if (!Pawn)
+        return false;
+    const UActorComponent *Component = Pawn->GetComponentByClass(USTUHealthComponent::StaticClass());
+    const auto *HealthComponent = Cast<USTUHealthComponent>(Component);
+
+    return HealthComponent;
 }
