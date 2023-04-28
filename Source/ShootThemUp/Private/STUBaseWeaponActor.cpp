@@ -82,7 +82,6 @@ void ASTUBaseWeaponActor::DecreaseAmmo()
         return;
 
     --CurrentAmmo.Bullet;
-    LogAmmo();
 
     if (IsClipEmpty() && !IsAmmoEmpty())
     {
@@ -100,13 +99,6 @@ bool ASTUBaseWeaponActor::IsAmmoEmpty()
 bool ASTUBaseWeaponActor::IsClipEmpty()
 {
     return CurrentAmmo.Bullet == 0;
-}
-
-void ASTUBaseWeaponActor::LogAmmo()
-{
-    FString ShowAmmo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullet) + " / ";
-    ShowAmmo += CurrentAmmo.Infinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips) + " Clips";
-    UE_LOG(BaseWeaponLog, Display, TEXT("%s"), *ShowAmmo);
 }
 
 bool ASTUBaseWeaponActor::ClipsEsEmpty()

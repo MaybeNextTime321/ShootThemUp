@@ -57,7 +57,6 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     void DecreaseAmmo();
     bool IsAmmoEmpty();
     bool IsClipEmpty();
-    void LogAmmo();
     bool ClipsEsEmpty();
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")

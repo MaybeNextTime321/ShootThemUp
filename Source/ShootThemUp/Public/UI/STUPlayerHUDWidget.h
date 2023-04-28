@@ -31,8 +31,4 @@ class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
     bool IsAlive() const;
     UFUNCTION(BlueprintCallable, Category = "PlayerHUDWidget")
     bool IsSpectating() const;
-
-  private:
-    const USTUWeaponComponent *GetWeaponComponent() const;
-    const USTUHealthComponent *GetHealthComponent() const;
 };
