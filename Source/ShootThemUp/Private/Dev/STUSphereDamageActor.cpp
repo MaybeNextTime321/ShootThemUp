@@ -11,7 +11,8 @@ ASTUSphereDamageActor::ASTUSphereDamageActor()
     PrimaryActorTick.bCanEverTick = true;
 
     SceneComponent = CreateDefaultSubobject<USceneComponent>("SceneComponent");
-    SceneComponent->AttachTo(GetRootComponent());
+    //SceneComponent->AttachTo(GetRootComponent());
+    SceneComponent->AttachToComponent(GetRootComponent(),FAttachmentTransformRules::KeepWorldTransform);
 }
 
 // Called when the game starts or when spawned

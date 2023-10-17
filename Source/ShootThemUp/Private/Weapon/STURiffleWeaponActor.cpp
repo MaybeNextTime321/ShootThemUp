@@ -33,7 +33,7 @@ void ASTURiffleWeaponActor::MakeShoot()
         DrawDebugLine(GetWorld(), GetSoketLocation(), HitResult.ImpactPoint, FColor::Blue, false, 3.0f, 0, 3.0f);
         DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
 
-        if (HitResult.Actor.IsValid())
+        if (IsValid(HitResult.GetActor()))
         {
             MakeHitWithDamage(HitResult);
         }
@@ -61,7 +61,7 @@ bool ASTURiffleWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForw
 
 void ASTURiffleWeaponActor::MakeHitWithDamage(FHitResult HitResult)
 {
-    ASTUBaseCharacter *Character = Cast<ASTUBaseCharacter>(HitResult.Actor);
+    ASTUBaseCharacter *Character = Cast<ASTUBaseCharacter>(HitResult.GetActor());
     if (!Character)
         return;
     Character->TakeDamage(DamageValue, FDamageEvent{}, Character->Controller, GetOwner());
