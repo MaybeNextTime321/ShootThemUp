@@ -78,7 +78,7 @@ bool ASTUBaseWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForwar
 
 void ASTUBaseWeaponActor::DecreaseAmmo()
 {
-    if (ClipsEsEmpty())
+    if (ClipsEsEmpty() && IsAmmoEmpty())
         return;
 
     --CurrentAmmo.Bullet;
@@ -86,14 +86,21 @@ void ASTUBaseWeaponActor::DecreaseAmmo()
     if (IsClipEmpty() && !IsAmmoEmpty())
     {
         EndFire();
-        OnClipEmpty.Broadcast();
+        OnClipEmpty.Broadcast(this);
     }
 }
 
 bool ASTUBaseWeaponActor::IsAmmoEmpty()
 {
 
-    return (!CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && CurrentAmmo.Bullet == 0);
+    return (!CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && //
+        CurrentAmmo.Bullet == 0);
+}
+
+bool ASTUBaseWeaponActor::IsAmmoFull()
+{
+    return (CurrentAmmo.Bullet == DefaultAmmo.Bullet && //
+        CurrentAmmo.Clips == DefaultAmmo.Clips);
 }
 
 bool ASTUBaseWeaponActor::IsClipEmpty()
@@ -131,6 +138,38 @@ FWeaponUIData ASTUBaseWeaponActor::GetUIData() const
 {
 
     return WeaponUI;
+}
+
+void ASTUBaseWeaponActor::AddAmmo(int32 ClipsAmount)
+{
+    if (CurrentAmmo.Infinite || IsAmmoFull() || ClipsAmount <= 0)
+    {
+        return;
+    }
+
+    if (IsAmmoEmpty())
+    {
+        CurrentAmmo.Clips = FMath::Clamp(ClipsAmount, 0, DefaultAmmo.Clips);
+        OnClipEmpty.Broadcast(this);
+    }
+    else if (CurrentAmmo.Clips < DefaultAmmo.Clips)
+    {
+        const auto NextClipAmount = CurrentAmmo.Clips + ClipsAmount;
+
+        if (DefaultAmmo.Clips - NextClipAmount >= 0)
+        {
+            CurrentAmmo.Clips = NextClipAmount;
+        }
+        else
+        {
+            CurrentAmmo.Bullet = DefaultAmmo.Bullet;
+            CurrentAmmo.Clips = DefaultAmmo.Clips;
+        }
+    }
+    else
+    {
+        CurrentAmmo.Bullet = DefaultAmmo.Bullet;
+    }
 }
 
 bool ASTUBaseWeaponActor::MakeHit(FVector &TraceStart, FVector &TraceEnd, FHitResult &HitResult)

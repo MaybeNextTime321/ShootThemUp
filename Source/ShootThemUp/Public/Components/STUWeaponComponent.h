@@ -24,6 +24,7 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void Reload();
     bool GetAmmoData(FAmmoData &WeaponData) const;
     bool GetFWeaponUIData(FWeaponUIData &WeaponUI) const;
+    bool TryToAddAmmo(TSubclassOf<ASTUBaseWeaponActor> WeaponType, int32 ClipsAmount);
 
   protected:
     // Called when the game starts
@@ -56,6 +57,7 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void AttachWeaponToSoket(ASTUBaseWeaponActor *Weapon, USceneComponent *SceneComponent, FName SoketName);
     void EquipWeapon(int32 WeaponIndex);
 
+
   private:
     void LaunchAnimMontage(UAnimMontage *AnimMontage);
     void InitAnimation();
@@ -66,6 +68,6 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     bool CanFire() const;
     bool CanEquip() const;
     bool CanReload() const;
-    void OnEmptyClip();
+    void OnEmptyClip(ASTUBaseWeaponActor *AmmoEmptyWeapon);
     void ChangeClip();
 };

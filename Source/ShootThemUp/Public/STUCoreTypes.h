@@ -4,7 +4,7 @@
 class ASTUBaseWeaponActor;
 
 // weapon
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySignature)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeaponActor*)
 
 USTRUCT(BlueprintType)
 struct FAmmoData

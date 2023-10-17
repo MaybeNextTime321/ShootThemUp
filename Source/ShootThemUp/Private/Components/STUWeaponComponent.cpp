@@ -74,6 +74,19 @@ void USTUWeaponComponent::EquipWeapon(int32 WeaponIndex)
     LaunchAnimMontage(EquipAnimMontage);
 }
 
+bool USTUWeaponComponent::TryToAddAmmo(TSubclassOf<ASTUBaseWeaponActor> WeaponType, int32 ClipsAmount)
+{
+    for (ASTUBaseWeaponActor* Weapon : Weapons)
+    {
+        if (Weapon && Weapon->IsA(WeaponType))
+        {
+            Weapon->AddAmmo(ClipsAmount);
+        }
+    }
+
+    return true;
+}
+
 void USTUWeaponComponent::LaunchAnimMontage(UAnimMontage *AnimMontage)
 {
     ACharacter *OwnerCharacter = Cast<ACharacter>(GetOwner());
@@ -141,9 +154,22 @@ bool USTUWeaponComponent::CanReload() const
             && CurrentWeapon->CanReload());
 }
 
-void USTUWeaponComponent::OnEmptyClip()
+void USTUWeaponComponent::OnEmptyClip(ASTUBaseWeaponActor *AmmoEmptyWeapon)
 {
-    ChangeClip();
+    if (CurrentWeapon == AmmoEmptyWeapon)
+    {
+        ChangeClip();
+    }
+    else
+    {
+        for (const auto Weapon : Weapons)
+        {
+            if (Weapon == AmmoEmptyWeapon)
+            {
+                Weapon->ChangeClip();
+            }
+        }
+    }
 }
 
 void USTUWeaponComponent::ChangeClip()
