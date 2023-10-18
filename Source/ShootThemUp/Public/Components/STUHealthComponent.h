@@ -13,6 +13,8 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
     GENERATED_BODY()
 
   public:
+
+    void AddHealth(float HealthAmount);
     // Sets default values for this component's properties
     USTUHealthComponent();
     float GetHealth() const
@@ -34,6 +36,8 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
 
     FOnDeadSignature OnDead;
     FOnTakeDamageSignature OnHealthChange;
+
+    bool IsFullHealth();
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Autoheal")
     bool Autoheal = true;

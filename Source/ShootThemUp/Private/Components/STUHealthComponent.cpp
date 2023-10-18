@@ -7,6 +7,11 @@
 
 DEFINE_LOG_CATEGORY_STATIC(HealthComponentLog, All, All)
 
+void USTUHealthComponent::AddHealth(float HealthAmount)
+{
+    SetHealth(Health + HealthAmount);
+}
+
 // Sets default values for this component's properties
 USTUHealthComponent::USTUHealthComponent()
 {
@@ -15,6 +20,11 @@ USTUHealthComponent::USTUHealthComponent()
     PrimaryComponentTick.bCanEverTick = false;
 
     // ...
+}
+
+bool USTUHealthComponent::IsFullHealth()
+{
+    return FMath::IsNearlyEqual(Health,MaxHealth);
 }
 
 // Called when the game starts
