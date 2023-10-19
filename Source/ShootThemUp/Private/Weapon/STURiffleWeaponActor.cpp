@@ -4,6 +4,8 @@
 #include <DrawDebugHelpers.h>
 #include <STUBaseCharacter.h>
 #include <STUBaseWeaponActor.h>
+#include "Weapon/Components/STUWeaponFXComponent.h"
+
 
 void ASTURiffleWeaponActor::StartFire()
 {
@@ -30,9 +32,8 @@ void ASTURiffleWeaponActor::MakeShoot()
 
     if (HitResult.bBlockingHit)
     {
-        DrawDebugLine(GetWorld(), GetSoketLocation(), HitResult.ImpactPoint, FColor::Blue, false, 3.0f, 0, 3.0f);
-        DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
 
+        WeaponFXComponent->PlayImpactFX(HitResult);
         if (IsValid(HitResult.GetActor()))
         {
             MakeHitWithDamage(HitResult);
@@ -42,6 +43,18 @@ void ASTURiffleWeaponActor::MakeShoot()
     {
         DrawDebugLine(GetWorld(), GetSoketLocation(), LineEnd, FColor::Blue, false, 3.0f, 0, 3.0f);
     }
+}
+
+ASTURiffleWeaponActor::ASTURiffleWeaponActor()
+{
+    WeaponFXComponent = CreateDefaultSubobject<USTUWeaponFXComponent>("WeaponFXComponent");
+}
+
+void ASTURiffleWeaponActor::BeginPlay()
+{
+    Super::BeginPlay();
+
+    check(WeaponFXComponent);
 }
 
 bool ASTURiffleWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd)

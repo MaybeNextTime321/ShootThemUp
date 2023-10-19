@@ -6,9 +6,8 @@
 #include "STUBaseWeaponActor.h"
 #include "STURiffleWeaponActor.generated.h"
 
-/**
- *
- */
+class USTUWeaponFXComponent;
+
 UCLASS()
 class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
 {
@@ -18,8 +17,14 @@ class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
     void StartFire() override;
     void EndFire() override;
     void MakeShoot() override;
-
+    ASTURiffleWeaponActor();
   protected:
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    USTUWeaponFXComponent* WeaponFXComponent;
+
+    virtual void BeginPlay() override;
+
     FTimerHandle TimerHandle;
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd) override;
 
