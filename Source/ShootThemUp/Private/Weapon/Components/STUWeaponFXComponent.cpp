@@ -4,6 +4,7 @@
 #include "Weapon/Components/STUWeaponFXComponent.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 
 
 // Sets default values for this component's properties
@@ -37,7 +38,19 @@ void USTUWeaponFXComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 
 void USTUWeaponFXComponent::PlayImpactFX(FHitResult HitResult)
 {
-    UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), NiagaraEffect, HitResult.ImpactPoint,
+    auto Effect = DefaultEffect;
+
+    if (HitResult.PhysMaterial.IsValid())
+    {
+        auto PhysMaterial = HitResult.PhysMaterial.Get();
+
+		if (MapEffects.Contains(PhysMaterial))
+        {
+            Effect = MapEffects[PhysMaterial];
+		}
+	}
+
+    UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Effect, HitResult.ImpactPoint,
                                                    HitResult.ImpactPoint.Rotation());
     
 }
