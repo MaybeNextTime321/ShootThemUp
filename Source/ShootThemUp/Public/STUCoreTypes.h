@@ -2,12 +2,11 @@
 #include "STUCoreTypes.generated.h"
 
 class ASTUBaseWeaponActor;
-
+class UNiagaraSystem;
 // weapon
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeaponActor*)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeaponActor *)
 
-USTRUCT(BlueprintType)
-struct FAmmoData
+    USTRUCT(BlueprintType) struct FAmmoData
 {
   public:
     GENERATED_USTRUCT_BODY()
@@ -51,4 +50,35 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeDamageSignature, float)
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     UTexture2D *DefaultImage;
+};
+
+// vfx
+USTRUCT(BlueprintType) struct FDecalData
+{
+    GENERATED_USTRUCT_BODY()
+
+  public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    UMaterial *DecalMaterial;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    FVector DecalSize = FVector(10.0f);
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    float LiveTime = 5.0f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    float FadeTime = 2.0f;
+};
+
+USTRUCT(BlueprintType) struct FImpactData
+{
+    GENERATED_USTRUCT_BODY()
+
+  public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Impact")
+    UNiagaraSystem *NiagaraSystem;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    FDecalData DecalImpact;
 };

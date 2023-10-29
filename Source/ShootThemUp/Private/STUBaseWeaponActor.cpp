@@ -94,13 +94,13 @@ bool ASTUBaseWeaponActor::IsAmmoEmpty()
 {
 
     return (!CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && //
-        CurrentAmmo.Bullet == 0);
+            CurrentAmmo.Bullet == 0);
 }
 
 bool ASTUBaseWeaponActor::IsAmmoFull()
 {
     return (CurrentAmmo.Bullet == DefaultAmmo.Bullet && //
-        CurrentAmmo.Clips == DefaultAmmo.Clips);
+            CurrentAmmo.Clips == DefaultAmmo.Clips);
 }
 
 bool ASTUBaseWeaponActor::IsClipEmpty()
