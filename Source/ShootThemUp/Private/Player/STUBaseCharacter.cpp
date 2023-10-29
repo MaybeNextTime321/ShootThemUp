@@ -100,12 +100,14 @@ void ASTUBaseCharacter::OnHealthChange(float HP)
 
 void ASTUBaseCharacter::CharacterIsDead()
 {
-    PlayAnimMontage(AnimMontage);
     GetCharacterMovement()->DisableMovement();
     Controller->ChangeState(NAME_Spectating);
     SetLifeSpan(5.0f);
     GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
     WeaponComponent->DestuctWeapon();
+
+    GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    GetMesh()->SetSimulatePhysics(true);
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)
