@@ -1,8 +1,11 @@
 // Shoot Them Up. Project from Udemy course
 
 #include "Components/STUHealthComponent.h"
+#include "Camera/CameraShakeBase.h"
 #include "Engine/Engine.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/Controller.h"
+#include "GameFramework/Pawn.h"
 #include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HealthComponentLog, All, All)
@@ -24,7 +27,7 @@ USTUHealthComponent::USTUHealthComponent()
 
 bool USTUHealthComponent::IsFullHealth()
 {
-    return FMath::IsNearlyEqual(Health,MaxHealth);
+    return FMath::IsNearlyEqual(Health, MaxHealth);
 }
 
 // Called when the game starts
@@ -57,6 +60,7 @@ void USTUHealthComponent::SetHealth(float NewHealth)
 void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType,
                                           AController *InstigatedBy, AActor *DamageCauser)
 {
+    PlayCameraShake();
 
     if (Damage == 0.0f || IsDead())
         return;
@@ -76,6 +80,22 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, co
 void USTUHealthComponent::StartAutoHeal()
 {
     World->GetTimerManager().SetTimer(HealTimer, this, &USTUHealthComponent::OnAutoHeal, TimerRate, true, TimerDelay);
+}
+
+void USTUHealthComponent::PlayCameraShake()
+{
+    if (IsDead())
+    {
+        return;
+    }
+
+    const APawn *PlayerPawn = Cast<APawn>(GetOwner());
+
+    const APlayerController *PlayerController = PlayerPawn->GetController<APlayerController>();
+    if (PlayerController && PlayerController->PlayerCameraManager)
+    {
+        PlayerController->PlayerCameraManager->StartCameraShake(DamageCamaeraShake);
+    }
 }
 
 void USTUHealthComponent::StopAutoHeal()
