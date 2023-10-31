@@ -46,7 +46,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer &ObjInit)
 void ASTUBaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
-    OnHealthChange(HealthComponent->GetHealth());
+    OnHealthChange(HealthComponent->GetHealth(), 0.0f);
     HealthComponent->OnDead.AddUObject(this, &ASTUBaseCharacter::CharacterIsDead);
     HealthComponent->OnHealthChange.AddUObject(this, &ASTUBaseCharacter::OnHealthChange);
     LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroupned);
@@ -93,7 +93,7 @@ float ASTUBaseCharacter::GetDegree()
     return Degree * FMath::Sign(CrossProduct.Z);
 }
 
-void ASTUBaseCharacter::OnHealthChange(float HP)
+void ASTUBaseCharacter::OnHealthChange(float HP, float HPDealta)
 {
     TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), HP)));
 }

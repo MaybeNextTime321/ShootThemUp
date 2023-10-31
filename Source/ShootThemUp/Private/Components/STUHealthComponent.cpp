@@ -53,8 +53,11 @@ void USTUHealthComponent::OnAutoHeal()
 
 void USTUHealthComponent::SetHealth(float NewHealth)
 {
-    Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
-    OnHealthChange.Broadcast(Health);
+    const float NextHealth = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+    const float HealthDelta = NextHealth - Health;
+
+    Health = NextHealth;
+    OnHealthChange.Broadcast(Health, HealthDelta);
 }
 
 void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType,

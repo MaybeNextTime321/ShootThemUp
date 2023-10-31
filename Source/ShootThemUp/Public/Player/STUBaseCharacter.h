@@ -65,7 +65,7 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
   private:
     UFUNCTION()
-    void OnHealthChange(float HP);
+    void OnHealthChange(float HP, float HPDealta);
     void CharacterIsDead();
     void MoveForward(float Amount);
     void MoveRight(float Amount);

@@ -36,7 +36,7 @@ struct FWeaponData
 
 // health
 DECLARE_MULTICAST_DELEGATE(FOnDeadSignature)
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnTakeDamageSignature, float)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnTakeDamageSignature, float, float)
 
     // ui
 
