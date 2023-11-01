@@ -5,16 +5,19 @@
 #include <STUBaseCharacter.h>
 #include <STUBaseWeaponActor.h>
 #include "Weapon/Components/STUWeaponFXComponent.h"
+#include <Kismet/GameplayStatics.h>
 
-
+DEFINE_LOG_CATEGORY_STATIC(RiffleWeaponLog, All, All)
 void ASTURiffleWeaponActor::StartFire()
 {
+    SetMuzzleVisibility(true);
     GetWorldTimerManager().SetTimer(TimerHandle, this, &ASTURiffleWeaponActor::MakeShoot, ShootTimer, true);
     MakeShoot();
 }
 
 void ASTURiffleWeaponActor::EndFire()
 {
+    SetMuzzleVisibility(false);
     GetWorldTimerManager().ClearTimer(TimerHandle);
 }
 
@@ -54,6 +57,16 @@ void ASTURiffleWeaponActor::BeginPlay()
 {
     Super::BeginPlay();
 
+    if (MuzzleFlash)
+    {
+        MuzzleFlashComponent = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash,         //
+                                                                                          SkeletalMesh,        //
+                                                                                          MuzzleSoketName,     //
+                                                                                          FVector::ZeroVector, //
+                                                                                          FRotator::ZeroRotator);
+    }
+    //SetMuzzleVisibility(false);
+
     check(WeaponFXComponent);
 }
 
@@ -70,6 +83,16 @@ bool ASTURiffleWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForw
     SoketForward = FMath::VRandCone(Rotation.Vector(), ConeHalfRad);
     TraceEnd = TraceStart + SoketForward * ShootDistance;
     return true;
+}
+
+void ASTURiffleWeaponActor::SetMuzzleVisibility(bool IsVisible)
+{
+    if (!MuzzleFlashComponent)
+    {
+        UE_LOG(RiffleWeaponLog, Warning, TEXT("Invalid Muzzle Flash Component"));
+    }
+
+    MuzzleFlashComponent->SetVisibility(IsVisible);
 }
 
 void ASTURiffleWeaponActor::MakeHitWithDamage(FHitResult HitResult)

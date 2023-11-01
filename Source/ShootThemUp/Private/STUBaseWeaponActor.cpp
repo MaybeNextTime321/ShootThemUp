@@ -58,7 +58,7 @@ bool ASTUBaseWeaponActor::GetPlayerViewPoint(FVector &Location, FRotator &Rotati
 
 FVector ASTUBaseWeaponActor::GetSoketLocation()
 {
-    return SkeletalMesh->GetSocketLocation("MuzzleSoket");
+    return SkeletalMesh->GetSocketLocation(MuzzleSoketName);
 }
 
 bool ASTUBaseWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd)

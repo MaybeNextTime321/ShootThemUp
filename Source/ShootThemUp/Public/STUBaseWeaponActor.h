@@ -6,7 +6,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "STUBaseWeaponActor.generated.h"
+
 class USkeletalMeshComponent;
 
 UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
@@ -36,6 +38,12 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     FAmmoData DefaultAmmo{15, 10, false};
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Particles")
+    UParticleSystem *MuzzleFlash;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+    FName MuzzleSoketName = "MuzzleSoket";
 
     virtual void BeginPlay() override;
 

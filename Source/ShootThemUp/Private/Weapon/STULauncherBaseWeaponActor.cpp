@@ -2,6 +2,7 @@
 
 #include "Weapon/STULauncherBaseWeaponActor.h"
 #include "Weapon/STUProjectile.h"
+#include <Kismet/GameplayStatics.h>
 
 void ASTULauncherBaseWeaponActor::StartFire()
 {
@@ -31,6 +32,14 @@ void ASTULauncherBaseWeaponActor::MakeShoot()
     ASTUProjectile *Projectile = GetWorld()->SpawnActorDeferred<ASTUProjectile>(ProjectileClass, SpawnTransform);
     if (Projectile)
     {
+        if (MuzzleFlash)
+        {
+            UParticleSystemComponent *ParticleSystem = UGameplayStatics::SpawnEmitterAttached(MuzzleFlash,         //
+                                                                                              SkeletalMesh,        //
+                                                                                              MuzzleSoketName,     //
+                                                                                              FVector::ZeroVector, //
+                                                                                              FRotator::ZeroRotator);
+        }
         Projectile->SetShootDirection(Direction);
         Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);
