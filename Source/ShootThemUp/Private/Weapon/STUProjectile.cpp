@@ -4,9 +4,8 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include <DrawDebugHelpers.h>
 #include "Weapon/Components/STUWeaponFXComponent.h"
-
+#include <DrawDebugHelpers.h>
 
 ASTUProjectile::ASTUProjectile()
 {
@@ -44,9 +43,15 @@ void ASTUProjectile::OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor
     MovementComponent->StopMovementImmediately();
     UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), SphereRadius,
                                         UDamageType::StaticClass(), {GetOwner()}, this, nullptr, ApplyAllDamage);
-    WeaponFXComponent->PlayImpactFX(Hit);
+    // WeaponFXComponent->PlayImpactFX(Hit);
+
+    if (HitEffect)
+    {
+        UParticleSystemComponent *ParticleSystem =
+            UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, Hit.ImpactPoint);
+    }
+
     Destroy();
-    DrawDebugSphere(GetWorld(), GetActorLocation(), SphereRadius, 30, FColor::Red, ApplyAllDamage, LiveSpan);
 }
 
 AController *ASTUProjectile::GetController() const

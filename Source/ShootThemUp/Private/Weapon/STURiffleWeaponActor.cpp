@@ -6,6 +6,8 @@
 #include <STUBaseWeaponActor.h>
 #include "Weapon/Components/STUWeaponFXComponent.h"
 #include <Kismet/GameplayStatics.h>
+#include <NiagaraComponent.h>
+#include <NiagaraFunctionLibrary.h>
 
 DEFINE_LOG_CATEGORY_STATIC(RiffleWeaponLog, All, All)
 void ASTURiffleWeaponActor::StartFire()
@@ -33,19 +35,20 @@ void ASTURiffleWeaponActor::MakeShoot()
     FHitResult HitResult;
     MakeHit(LineStart, LineEnd, HitResult);
 
+    FVector TraceEndPoint = LineEnd;
+
     if (HitResult.bBlockingHit)
     {
-
         WeaponFXComponent->PlayImpactFX(HitResult);
         if (IsValid(HitResult.GetActor()))
         {
+            TraceEndPoint = HitResult.ImpactPoint;
             MakeHitWithDamage(HitResult);
         }
     }
-    else
-    {
-        DrawDebugLine(GetWorld(), GetSoketLocation(), LineEnd, FColor::Blue, false, 3.0f, 0, 3.0f);
-    }
+
+    SpawnTraceAtLocation(GetSoketLocation(), TraceEndPoint);
+    
 }
 
 ASTURiffleWeaponActor::ASTURiffleWeaponActor()
@@ -65,7 +68,7 @@ void ASTURiffleWeaponActor::BeginPlay()
                                                                                           FVector::ZeroVector, //
                                                                                           FRotator::ZeroRotator);
     }
-    //SetMuzzleVisibility(false);
+    SetMuzzleVisibility(false);
 
     check(WeaponFXComponent);
 }
@@ -83,6 +86,18 @@ bool ASTURiffleWeaponActor::GetTraceData(FVector &TraceStart, FVector &SoketForw
     SoketForward = FMath::VRandCone(Rotation.Vector(), ConeHalfRad);
     TraceEnd = TraceStart + SoketForward * ShootDistance;
     return true;
+}
+
+void ASTURiffleWeaponActor::SpawnTraceAtLocation(const FVector &StartLocation, const FVector &EndLocation)
+{
+    if (TraceNiagaraSystem)
+    {
+        const auto NiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), TraceNiagaraSystem, StartLocation);
+        if (NiagaraComponent)
+        {
+            NiagaraComponent->SetNiagaraVariableVec3(TraceTargetName,EndLocation);
+        }
+    }
 }
 
 void ASTURiffleWeaponActor::SetMuzzleVisibility(bool IsVisible)

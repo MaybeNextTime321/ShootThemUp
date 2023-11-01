@@ -7,6 +7,8 @@
 #include "STURiffleWeaponActor.generated.h"
 
 class USTUWeaponFXComponent;
+class UNiagaraComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
@@ -18,10 +20,16 @@ class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
     void EndFire() override;
     void MakeShoot() override;
     ASTURiffleWeaponActor();
+
   protected:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    USTUWeaponFXComponent *WeaponFXComponent;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
-    USTUWeaponFXComponent* WeaponFXComponent;
+    UNiagaraSystem *TraceNiagaraSystem;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    FString TraceTargetName;
 
     virtual void BeginPlay() override;
 
@@ -29,6 +37,7 @@ class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd) override;
 
   private:
+    void SpawnTraceAtLocation(const FVector &StartLocation, const FVector &EndLocation);
     UParticleSystemComponent *MuzzleFlashComponent;
     void SetMuzzleVisibility(bool IsVisible);
     void MakeHitWithDamage(FHitResult HitResult);

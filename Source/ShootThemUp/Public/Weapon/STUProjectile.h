@@ -38,6 +38,9 @@ class SHOOTTHEMUP_API ASTUProjectile : public AActor
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     USphereComponent *CollisionComponent;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Particles")
+    UParticleSystem *HitEffect;
+
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     float SphereRadius = 200.0f;
 
