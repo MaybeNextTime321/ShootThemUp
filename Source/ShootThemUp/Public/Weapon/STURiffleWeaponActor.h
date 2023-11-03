@@ -36,7 +36,7 @@ class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
     FTimerHandle TimerHandle;
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd) override;
 
-  private:
+  private: 
     void SpawnTraceAtLocation(const FVector &StartLocation, const FVector &EndLocation);
     UParticleSystemComponent *MuzzleFlashComponent;
     void SetMuzzleVisibility(bool IsVisible);
