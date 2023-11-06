@@ -2,14 +2,25 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "AIController.h"
+#include "CoreMinimal.h"
 #include "STUAIController.generated.h"
 
+class USTUAIPerceptionComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUAIController : public AAIController
 {
-	GENERATED_BODY()
+
+    GENERATED_BODY()
     virtual void OnPossess(APawn *InPawn) override;
+
+  public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
+    USTUAIPerceptionComponent *Component;
+
+  protected:
+    virtual void Tick(float DeltaTime) override;
+
+    ASTUAIController();
 };
