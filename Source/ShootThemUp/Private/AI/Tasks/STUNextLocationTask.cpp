@@ -1,8 +1,7 @@
 #include "AI/Tasks/STUNextLocationTask.h"
-#include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "NavigationSystem.h"
-
 
 USTUNextLocationTask::USTUNextLocationTask()
 {
@@ -28,14 +27,26 @@ EBTNodeResult::Type USTUNextLocationTask::ExecuteTask(UBehaviorTreeComponent &Ow
 
     const auto NavSys = UNavigationSystemV1::GetCurrent(Pawn);
 
-    if(!NavSys)
+    if (!NavSys)
     {
         return EBTNodeResult::Failed;
     }
     FNavLocation Result;
 
-    const auto Found = NavSys->GetRandomReachablePointInRadius(Pawn->GetActorLocation(),SphereRadius,Result);
-    
+    auto Location = Pawn->GetActorLocation();
+
+    if (!SelfCenter)
+    {
+        const auto Actor = Cast<AActor>(BlackboardComponent->GetValueAsObject(MovingActor.SelectedKeyName));
+        if (!Actor)
+        {
+            return EBTNodeResult::Failed;
+        }
+        Location = Actor->GetActorLocation();
+    }
+
+    const auto Found = NavSys->GetRandomReachablePointInRadius(Location, SphereRadius, Result);
+
     if (!Found)
     {
         return EBTNodeResult::Failed;

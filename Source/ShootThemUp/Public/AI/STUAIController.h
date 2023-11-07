@@ -22,5 +22,11 @@ class SHOOTTHEMUP_API ASTUAIController : public AAIController
   protected:
     virtual void Tick(float DeltaTime) override;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
+    FName FocusOnKeyName = "EnemyActor";
+
     ASTUAIController();
+
+  private:
+    AActor *GetFocusedActor() const;
 };
