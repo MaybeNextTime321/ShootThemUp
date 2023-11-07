@@ -38,7 +38,7 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     FAmmoData DefaultAmmo{15, 10, false};
-    
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Particles")
     UParticleSystem *MuzzleFlash;
 
@@ -58,6 +58,7 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     bool CanReload() const;
     FWeaponUIData GetUIData() const;
     void AddAmmo(int32 ClipsAmount);
+
   protected:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
     FVector GetSoketLocation();
@@ -73,5 +74,4 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     FAmmoData CurrentAmmo;
-
 };

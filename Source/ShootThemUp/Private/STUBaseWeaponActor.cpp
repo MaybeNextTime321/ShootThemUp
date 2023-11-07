@@ -51,8 +51,23 @@ void ASTUBaseWeaponActor::DestructWeapon()
 
 bool ASTUBaseWeaponActor::GetPlayerViewPoint(FVector &Location, FRotator &Rotation)
 {
-    ACharacter *CharacterOwner = Cast<ACharacter>(GetOwner());
-    CharacterOwner->Controller->GetPlayerViewPoint(Location, Rotation);
+    const auto STUCharacter = Cast<ACharacter>(GetOwner());
+    if (!STUCharacter)
+    {
+        return false;
+    }
+
+    if (STUCharacter->IsPlayerControlled())
+    {
+        ACharacter *CharacterOwner = Cast<ACharacter>(GetOwner());
+        CharacterOwner->Controller->GetPlayerViewPoint(Location, Rotation);
+    }
+    else
+    {
+        Location = GetSoketLocation();
+        Rotation = SkeletalMesh->GetSocketRotation(MuzzleSoketName);
+    }
+
     return true;
 }
 

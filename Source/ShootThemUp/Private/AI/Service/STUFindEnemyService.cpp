@@ -1,12 +1,10 @@
 // Shoot Them Up. Project from Udemy course
 
-
 #include "AI/Service/STUFindEnemyService.h"
-#include "BehaviorTree/BlackboardComponent.h"
-#include "STUUtils.h"
 #include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/STUAIPerceptionComponent.h"
-
+#include "STUUtils.h"
 
 USTUFindEnemyService::USTUFindEnemyService()
 {
@@ -28,5 +26,5 @@ void USTUFindEnemyService::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *No
         }
     }
 
-    Super::TickNode(OwnerComp,NodeMemory,DeltaSeconds);
+    Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 }
