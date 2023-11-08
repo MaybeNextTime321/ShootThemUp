@@ -17,10 +17,10 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
   public:
     // Sets default values for this component's properties
     USTUWeaponComponent();
-    void StartFire();
+    virtual void StartFire();
+    virtual void NextWeapon();
     void EndFire();
     void DestuctWeapon();
-    void NextWeapon();
     void Reload();
     bool GetAmmoData(FAmmoData &WeaponData) const;
     bool GetFWeaponUIData(FWeaponUIData &WeaponUI) const;
@@ -56,7 +56,8 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
 
     void AttachWeaponToSoket(ASTUBaseWeaponActor *Weapon, USceneComponent *SceneComponent, FName SoketName);
     void EquipWeapon(int32 WeaponIndex);
-
+    bool CanFire() const;
+    bool CanEquip() const;
 
   private:
     void LaunchAnimMontage(UAnimMontage *AnimMontage);
@@ -65,8 +66,6 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     void OnReloadFinished(USkeletalMeshComponent *MeshComponent);
     bool WeaponChangeInProgress = false;
     bool WeaponReloadInProgress = false;
-    bool CanFire() const;
-    bool CanEquip() const;
     bool CanReload() const;
     void OnEmptyClip(ASTUBaseWeaponActor *AmmoEmptyWeapon);
     void ChangeClip();
