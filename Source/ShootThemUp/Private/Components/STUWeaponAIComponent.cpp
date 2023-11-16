@@ -22,7 +22,7 @@ void USTUWeaponAIComponent::StartFire()
 
 void USTUWeaponAIComponent::NextWeapon()
 {
-    if (!CanEquip())
+    if (!CanEquip() || Weapons.Num() == 0)
     {
         return;
     }

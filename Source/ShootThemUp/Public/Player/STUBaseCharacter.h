@@ -47,6 +47,8 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
     FVector2D LandedDamage = {10, 20};
 
+    virtual void CharacterIsDead();
+
   public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -66,7 +68,6 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
   private:
     UFUNCTION()
     void OnHealthChange(float HP, float HPDealta);
-    void CharacterIsDead();
     void MoveForward(float Amount);
     void MoveRight(float Amount);
     void SetShiftValue();
