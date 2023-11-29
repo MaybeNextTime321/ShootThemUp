@@ -59,13 +59,13 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     FWeaponUIData GetUIData() const;
     void AddAmmo(int32 ClipsAmount);
     bool IsAmmoEmpty();
+    bool IsAmmoFull();
 
   protected:
     bool GetPlayerViewPoint(FVector &Location, FRotator &Rotation);
     FVector GetSoketLocation();
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd);
     void DecreaseAmmo();
-    bool IsAmmoFull();
     bool IsClipEmpty();
     bool ClipsEsEmpty();
 

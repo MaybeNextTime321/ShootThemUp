@@ -44,3 +44,16 @@ void USTUWeaponAIComponent::NextWeapon()
         EquipWeapon(CurrentWeaponIndex);
     }
 }
+
+bool USTUWeaponAIComponent::NeedAmmo(TSubclassOf<ASTUBaseWeaponActor> Weapon) const
+{
+
+    for (const auto WeaponInArray : Weapons)
+    {
+        if (WeaponInArray->IsA(Weapon))
+        {
+            return !WeaponInArray->IsAmmoFull();
+        }
+    }
+    return false;
+}
