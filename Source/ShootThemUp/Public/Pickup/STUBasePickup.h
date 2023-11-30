@@ -31,10 +31,14 @@ class SHOOTTHEMUP_API ASTUBasePickup : public AActor
   public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
+    bool CouldBeTaken() const;
 
-    private:
+  private:
     void PickupWasTaken();
     void RespawnPickup();
     void GenerateYAW();
     float RotationYAW = 2.0f;
+
+  private:
+    FTimerHandle TimerHandle;
 };

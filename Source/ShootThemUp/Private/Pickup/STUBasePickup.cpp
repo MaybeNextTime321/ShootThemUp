@@ -26,7 +26,7 @@ void ASTUBasePickup::BeginPlay()
 void ASTUBasePickup::NotifyActorBeginOverlap(AActor *OtherActor)
 {
     Super::NotifyActorBeginOverlap(OtherActor);
-    
+
     APawn *Pawn = Cast<APawn>(OtherActor);
 
     if (!Pawn)
@@ -53,11 +53,16 @@ void ASTUBasePickup::Tick(float DeltaTime)
     AddActorLocalRotation(FRotator(0, RotationYAW, 0));
 }
 
+bool ASTUBasePickup::CouldBeTaken() const
+{
+    return !GetWorldTimerManager().IsTimerActive(TimerHandle);
+}
+
 void ASTUBasePickup::PickupWasTaken()
 {
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
     GetRootComponent()->SetVisibility(false, true);
-    FTimerHandle TimerHandle;
+
     GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ASTUBasePickup::RespawnPickup, RespawnTime);
 }
 
