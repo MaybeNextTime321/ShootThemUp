@@ -2,13 +2,14 @@
 
 
 #include "Pickup/STUHealthPickup.h"
+#include "STUUtils.h"
 #include "Components/STUHealthComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HealthPickupLog, All, All);
 
 bool ASTUHealthPickup::GivePickupTo(APawn *PlayerPawn)
 {
-    USTUHealthComponent *HealthComponent = PlayerPawn->GetComponentByClass<USTUHealthComponent>();
+    USTUHealthComponent *HealthComponent = STUUtils::GetPlayerComponent<USTUHealthComponent>(PlayerPawn);
 
     if (!HealthComponent || HealthComponent->IsDead() || HealthComponent->IsFullHealth())
     {

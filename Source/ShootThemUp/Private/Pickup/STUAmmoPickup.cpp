@@ -11,14 +11,15 @@ DEFINE_LOG_CATEGORY_STATIC(AmmoPickupLog, All, All);
 
 bool ASTUAmmoPickup::GivePickupTo(APawn *PlayerPawn)
 {
-    USTUHealthComponent *HealthComponent = PlayerPawn->GetComponentByClass<USTUHealthComponent>();
+    USTUHealthComponent *HealthComponent = STUUtils::GetPlayerComponent<USTUHealthComponent>(PlayerPawn);
+
 
     if (!HealthComponent && HealthComponent->IsDead())
     {
         return false;
     }
 
-    USTUWeaponComponent *WeaponComponent = PlayerPawn->GetComponentByClass<USTUWeaponComponent>();
+    USTUWeaponComponent *WeaponComponent = STUUtils::GetPlayerComponent<USTUWeaponComponent>(PlayerPawn);
     
     if (!WeaponComponent)
     {

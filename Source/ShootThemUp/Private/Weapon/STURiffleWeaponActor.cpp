@@ -37,6 +37,10 @@ void ASTURiffleWeaponActor::MakeShoot()
 
     FVector TraceEndPoint = LineEnd;
 
+    DrawDebugLine(GetWorld(), SkeletalMesh->GetSocketLocation("MuzzleSoket"), HitResult.ImpactPoint, FColor::Blue,
+                  false, 3.0f, 0, 3.0f);
+    DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
+
     if (HitResult.bBlockingHit)
     {
         WeaponFXComponent->PlayImpactFX(HitResult);
