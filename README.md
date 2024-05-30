@@ -38,10 +38,10 @@
 
 ```bash
 # Клонируем репозиторий
-git clone https://github.com/ваш-username/ShootThemUp.git
+https://github.com/MaybeNextTime321/ShootThemUp.git
 
 # Переходим в директорию проекта
-cd название-проекта
+cd ShootThemUp
 
 # Открываем проект в Unreal Engine 4
 # Для этого просто дважды щелкните на .uproject файл в корневой директории проекта
