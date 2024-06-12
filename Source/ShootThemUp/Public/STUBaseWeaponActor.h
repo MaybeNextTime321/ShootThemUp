@@ -24,10 +24,10 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
     USkeletalMeshComponent *SkeletalMesh;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
     float ShootDistance = 5000;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
     float DamageValue = 10.0f;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")

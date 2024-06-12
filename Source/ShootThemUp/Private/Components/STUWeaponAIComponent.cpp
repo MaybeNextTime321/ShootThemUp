@@ -22,7 +22,7 @@ void USTUWeaponAIComponent::StartFire()
 
 void USTUWeaponAIComponent::NextWeapon()
 {
-    if (!CanEquip() || Weapons.Num() == 0)
+    if (!CanEquip())
     {
         return;
     }
@@ -35,7 +35,7 @@ void USTUWeaponAIComponent::NextWeapon()
         {
             break;
         }
-        NextIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
+        NextIndex = (NextIndex + 1) % Weapons.Num();
     }
 
     if (CurrentWeaponIndex != NextIndex)
