@@ -42,8 +42,8 @@ void ASTUProjectile::OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor
 {
     MovementComponent->StopMovementImmediately();
     UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), SphereRadius,
-                                        UDamageType::StaticClass(), {GetOwner()}, this, nullptr, ApplyAllDamage);
-    // WeaponFXComponent->PlayImpactFX(Hit);
+                                        UDamageType::StaticClass(), {GetOwner()}, this, GetController(),
+                                        ApplyAllDamage, ECollisionChannel::ECC_Pawn);
 
     if (HitEffect)
     {
