@@ -15,8 +15,7 @@ class AAIController;
 UCLASS()
 class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
 
   public:
     ASTUGameModeBase();
@@ -34,6 +33,12 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     TSubclassOf<APawn> AIPawnClass;
 
+    void RoundStart();
+    void RoundTimerUpdate();
+
   private:
     void SpawnBots();
+    FTimerHandle RoundTimer;
+    int32 CurrentRound = 0;
+    int32 TimeRemainInRound = 0;
 };
