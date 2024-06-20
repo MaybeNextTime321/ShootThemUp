@@ -3,19 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
 #include "STUCoreTypes.h"
-#include "STUGameModeBaseSplit.generated.h"
+#include "GameFramework/GameModeBase.h"
+#include "STUGameModeBase.generated.h"
 
 class AAIController;
 
+/**
+ * 
+ */
 UCLASS()
-class SHOOTTHEMUP_API ASTUGameModeBaseSplit : public AGameModeBase
+class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
+	
 
   public:
-    ASTUGameModeBaseSplit();
+    ASTUGameModeBase();
 
     virtual void StartPlay() override;
     virtual UClass *GetDefaultPawnClassForController_Implementation(AController *InController) override;

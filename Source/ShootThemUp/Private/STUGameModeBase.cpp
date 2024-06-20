@@ -1,25 +1,26 @@
 // Shoot Them Up. Project from Udemy course
 
-#include "STUGameModeBaseSplit.h"
+
+#include "STUGameModeBase.h"
 #include "AIController.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
 #include "UI/STUHUD.h"
 
-ASTUGameModeBaseSplit::ASTUGameModeBaseSplit()
+ASTUGameModeBase::ASTUGameModeBase()
 {
     DefaultPawnClass = ASTUBaseCharacter::StaticClass();
     PlayerControllerClass = ASTUPlayerController::StaticClass();
     HUDClass = ASTUHUD::StaticClass();
 }
 
-void ASTUGameModeBaseSplit::StartPlay()
+void ASTUGameModeBase::StartPlay()
 {
     Super::StartPlay();
     SpawnBots();
 }
 
-UClass *ASTUGameModeBaseSplit::GetDefaultPawnClassForController_Implementation(AController *InController)
+UClass *ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AController *InController)
 {
     if (InController && InController->IsA<AAIController>())
     {
@@ -29,7 +30,7 @@ UClass *ASTUGameModeBaseSplit::GetDefaultPawnClassForController_Implementation(A
     return Super::GetDefaultPawnClassForController_Implementation(InController);
 }
 
-void ASTUGameModeBaseSplit::SpawnBots()
+void ASTUGameModeBase::SpawnBots()
 {
     if (!GetWorld())
     {
