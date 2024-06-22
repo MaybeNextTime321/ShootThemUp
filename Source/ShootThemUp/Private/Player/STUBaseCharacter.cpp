@@ -93,6 +93,18 @@ float ASTUBaseCharacter::GetDegree()
     return Degree * FMath::Sign(CrossProduct.Z);
 }
 
+void ASTUBaseCharacter::SetColor(FLinearColor& Color)
+{
+    const auto MaterialInstance = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+
+    if (!MaterialInstance)
+    {
+        return;
+    }
+
+    MaterialInstance->SetVectorParameterValue(MaterialColorName, Color);
+}
+
 void ASTUBaseCharacter::OnHealthChange(float HP, float HPDealta)
 {
     TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), HP)));

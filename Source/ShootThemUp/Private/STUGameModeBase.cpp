@@ -7,6 +7,7 @@
 #include "Components/STUWeaponComponent.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
+#include "Player/STUPlayerState.h"
 #include "UI/STUHUD.h"
 
 DEFINE_LOG_CATEGORY_STATIC(GameModeBase, All, All)
@@ -16,12 +17,14 @@ ASTUGameModeBase::ASTUGameModeBase()
     DefaultPawnClass = ASTUBaseCharacter::StaticClass();
     PlayerControllerClass = ASTUPlayerController::StaticClass();
     HUDClass = ASTUHUD::StaticClass();
+    PlayerStateClass = ASTUPlayerState::StaticClass();
 }
 
 void ASTUGameModeBase::StartPlay()
 {
     Super::StartPlay();
     SpawnBots();
+    SetupTeams();
     RoundStart();
 }
 
@@ -107,4 +110,67 @@ void ASTUGameModeBase::RestartSinglePlayer(AController *PawnController)
     }
 
     RestartPlayer(PawnController);
+    SetPlayerColor(PawnController);
+}
+
+void ASTUGameModeBase::SetupTeams()
+{
+    if (!GetWorld())
+    {
+        return;
+    }
+
+    int32 TeamNumber = 1;
+    for (auto it = GetWorld()->GetControllerIterator(); it; ++it)
+    {
+        const auto PlayerController = it->Get();
+        if (!PlayerController)
+            continue;
+
+        auto PlayerState = Cast<ASTUPlayerState>(PlayerController->PlayerState);
+        if (!PlayerState)
+            continue;
+
+        PlayerState->SetTeamNumber(TeamNumber);
+        PlayerState->SetTeamColor(GetColorByTeamID(TeamNumber));
+
+        SetPlayerColor(PlayerController);
+
+        TeamNumber = TeamNumber == 1 ? 2 : 1;
+    }
+
+}
+
+FLinearColor ASTUGameModeBase::GetColorByTeamID(int32 TeamID)
+{
+    const int32 TeamIndexID = TeamID - 1;
+
+    if (TeamIndexID < Gamemode.TeamColors.Num())
+    {
+        return Gamemode.TeamColors[TeamIndexID];
+    }
+
+    UE_LOG(GameModeBase, Display, TEXT("CHECK STEUPED TEAM COLORS"));
+    return Gamemode.DefaultColor;
+}
+
+void ASTUGameModeBase::SetPlayerColor(AController *PlayerController)
+{
+    if (!PlayerController)
+        return;
+
+    const auto PlayerState = Cast<ASTUPlayerState>(PlayerController->PlayerState);
+    if (!PlayerState)
+        return;
+
+    FLinearColor SetupColor = PlayerState->GetPlayerColor();
+
+    auto Character = Cast<ASTUBaseCharacter>(PlayerController->GetPawn());
+
+    if (!Character)
+    {
+        return;
+    }
+
+    Character->SetColor(SetupColor);
 }

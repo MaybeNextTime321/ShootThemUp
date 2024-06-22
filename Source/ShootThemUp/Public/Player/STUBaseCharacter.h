@@ -47,6 +47,9 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
     FVector2D LandedDamage = {10, 20};
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Maerial")
+    FName MaterialColorName = "Paint Color";
+
     virtual void CharacterIsDead();
 
   public:
@@ -64,6 +67,8 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
     UPROPERTY(EditAnyWhere, Category = "Animation")
     UAnimMontage *AnimMontage;
+
+    void SetColor(FLinearColor& Color);
 
   private:
     UFUNCTION()

@@ -42,5 +42,8 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     int32 CurrentRound = 0;
     int32 TimeRemainInRound = 0;
     void RestartPlayers();
-    void RestartSinglePlayer(AController * PawnController);
+    void RestartSinglePlayer(AController *PawnController);
+    void SetupTeams();
+    FLinearColor GetColorByTeamID(int32 TeamID);
+    void SetPlayerColor(AController *PlayerController);
 };
