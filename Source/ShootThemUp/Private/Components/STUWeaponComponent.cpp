@@ -231,8 +231,12 @@ void USTUWeaponComponent::EndFire()
 
 void USTUWeaponComponent::DestuctWeapon()
 {
-    CurrentWeapon->EndFire();
-    CurrentWeapon = nullptr;
+    if (CurrentWeapon)
+    {
+        CurrentWeapon->EndFire();
+        CurrentWeapon = nullptr;
+    }
+
     for (auto Weapon : Weapons)
     {
         Weapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);

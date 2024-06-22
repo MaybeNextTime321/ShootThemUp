@@ -41,4 +41,6 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     FTimerHandle RoundTimer;
     int32 CurrentRound = 0;
     int32 TimeRemainInRound = 0;
+    void RestartPlayers();
+    void RestartSinglePlayer(AController * PawnController);
 };

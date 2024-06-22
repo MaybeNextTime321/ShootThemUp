@@ -31,6 +31,7 @@ ASTUAIController::ASTUAIController()
 {
     Component = CreateDefaultSubobject<USTUAIPerceptionComponent>("PerseptionComponent");
     SetPerceptionComponent(*Component);
+    bWantsPlayerState = true;
 }
 
 AActor *ASTUAIController::GetFocusedActor() const

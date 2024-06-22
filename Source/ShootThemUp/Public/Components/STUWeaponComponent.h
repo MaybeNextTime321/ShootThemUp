@@ -25,7 +25,7 @@ class SHOOTTHEMUP_API USTUWeaponComponent : public UActorComponent
     bool GetAmmoData(FAmmoData &WeaponData) const;
     bool GetFWeaponUIData(FWeaponUIData &WeaponUI) const;
     bool TryToAddAmmo(TSubclassOf<ASTUBaseWeaponActor> WeaponType, int32 ClipsAmount);
-
+ 
   protected:
     // Called when the game starts
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")

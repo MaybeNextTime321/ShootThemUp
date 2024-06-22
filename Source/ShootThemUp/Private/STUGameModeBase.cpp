@@ -3,6 +3,8 @@
 
 #include "STUGameModeBase.h"
 #include "AIController.h"
+#include "STUUtils.h"
+#include "Components/STUWeaponComponent.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
 #include "UI/STUHUD.h"
@@ -43,6 +45,7 @@ void ASTUGameModeBase::RoundStart()
     {
         GetWorld()->GetTimerManager().SetTimer(RoundTimer, this, &ASTUGameModeBase::RoundTimerUpdate, 1.0f, true);
         TimeRemainInRound = Gamemode.RoundDurationInSecond;
+        RestartPlayers();
     }
     else
     {
@@ -76,4 +79,32 @@ void ASTUGameModeBase::SpawnBots()
         const auto AIController = GetWorld()->SpawnActor<AAIController>(AIControllerClass, SpawnParam);
         RestartPlayer(AIController);
     }
+}
+
+void ASTUGameModeBase::RestartPlayers()
+{
+    if (!GetWorld())
+    {
+        return;
+    }
+
+    for (auto it = GetWorld()->GetControllerIterator(); it; ++it)
+    {
+        RestartSinglePlayer(it->Get());
+    }
+}
+
+void ASTUGameModeBase::RestartSinglePlayer(AController *PawnController)
+{
+    if (PawnController && PawnController->GetPawn())
+    {
+        auto WeaponComponent = STUUtils::GetPlayerComponent<USTUWeaponComponent>(PawnController->GetPawn());
+        if (WeaponComponent)
+        {
+            WeaponComponent->DestuctWeapon();
+        }
+        PawnController->GetPawn()->Reset();
+    }
+
+    RestartPlayer(PawnController);
 }
