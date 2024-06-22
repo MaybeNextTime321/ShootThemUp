@@ -36,7 +36,9 @@ AActor *USTUAIPerceptionComponent::GetClosedEnemy() const
     for (const auto PerceptedActor : Perseptions)
     {
         const auto HealthComponent = STUUtils::GetPlayerComponent<USTUHealthComponent>(PerceptedActor);
-        if (HealthComponent && !HealthComponent->IsDead())
+        const auto PerceptedPawn = Cast<APawn>(PerceptedActor);
+        const bool AreEnemy = STUUtils::AreEnemy(Controller, PerceptedPawn->Controller);
+        if (HealthComponent && !HealthComponent->IsDead() && AreEnemy)
         {
             const auto Distace = (PerceptedActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
 
