@@ -38,6 +38,24 @@ UClass *ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AContr
     return Super::GetDefaultPawnClassForController_Implementation(InController);
 }
 
+void ASTUGameModeBase::SetKill(AController *Killer, AController *VictimController)
+{
+    const auto KillerState = Killer ? Cast<ASTUPlayerState>(Killer->PlayerState) : nullptr;
+    const auto VictimState = VictimController ? Cast<ASTUPlayerState>(VictimController->PlayerState) : nullptr;
+
+    if (KillerState)
+    {
+        KillerState->AddKills();
+    }
+
+    if (VictimState)
+    {
+        VictimState->AddDeath();
+    }
+}
+
+
+
 void ASTUGameModeBase::RoundStart()
 {
     UE_LOG(GameModeBase, Display, TEXT("ROUND OVER"));
@@ -53,6 +71,7 @@ void ASTUGameModeBase::RoundStart()
     else
     {
         UE_LOG(GameModeBase, Display, TEXT("============ GAME OVER ============"));
+        DisplayPlayerStatictic();
     }
    
 }
@@ -64,6 +83,31 @@ void ASTUGameModeBase::RoundTimerUpdate()
     if (TimeRemainInRound == 0)
     {
         RoundStart();
+    }
+}
+
+void ASTUGameModeBase::DisplayPlayerStatictic() const
+{
+    if (!GetWorld())
+    {
+        return;
+    }
+
+    for (auto it = GetWorld()->GetControllerIterator(); it; ++it)
+    {
+        const auto Controller = it->Get();
+        if (!Controller)
+        {
+            continue;
+        }
+
+        const auto PlayerState = Cast<ASTUPlayerState>(Controller->PlayerState);
+        if (!PlayerState)
+        {
+            continue;
+        }
+
+        PlayerState->DisplayStatistic();
     }
 }
 

@@ -15,7 +15,6 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
     GENERATED_BODY()
 
   public:
-
     void AddHealth(float HealthAmount);
     // Sets default values for this component's properties
     USTUHealthComponent();
@@ -77,7 +76,7 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
     UFUNCTION()
     void OnTakeAnyDamage(AActor *DamagedActor, float Damage, const class UDamageType *DamageType,
                          class AController *InstigatedBy, AActor *DamageCauser);
-
+    void Killed(AController *KilledBy);
     void PlayCameraShake();
     void StartAutoHeal();
     void StopAutoHeal();

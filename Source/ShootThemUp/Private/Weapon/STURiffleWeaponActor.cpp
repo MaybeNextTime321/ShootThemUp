@@ -49,10 +49,6 @@ void ASTURiffleWeaponActor::MakeShoot()
         }
     }
 
-    DrawDebugLine(GetWorld(), SkeletalMesh->GetSocketLocation("MuzzleSoket"), TraceEndPoint, FColor::Blue,
-                  false, 3.0f, 0, 3.0f);
-    DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 3.0f, 0, 3.0f);
-
     SpawnTraceAtLocation(GetSoketLocation(), TraceEndPoint);
     
 }
@@ -121,5 +117,13 @@ void ASTURiffleWeaponActor::MakeHitWithDamage(FHitResult HitResult)
     ASTUBaseCharacter *Character = Cast<ASTUBaseCharacter>(HitResult.GetActor());
     if (!Character)
         return;
-    Character->TakeDamage(DamageValue, FDamageEvent{}, Character->Controller, GetOwner());
+    Character->TakeDamage(DamageValue, FDamageEvent{}, GetController(), GetOwner());
+}
+
+
+AController *ASTURiffleWeaponActor::GetController() const
+{
+    APawn *Pawn = Cast<APawn>(GetOwner());
+
+    return Pawn ? Pawn->GetController() : nullptr;
 }

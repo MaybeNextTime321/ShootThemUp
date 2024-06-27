@@ -7,6 +7,8 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/Pawn.h"
 #include "TimerManager.h"
+#include "STUGameModeBase.h"
+#include "Player/STUPlayerController.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HealthComponentLog, All, All)
 
@@ -74,10 +76,36 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, co
     SetHealth(Health - Damage);
 
     if (IsDead())
+    {
+        Killed(InstigatedBy);
         OnDead.Broadcast();
+    }
+
 
     else if (Autoheal)
         StartAutoHeal();
+}
+
+void USTUHealthComponent::Killed(AController *KilledBy)
+{
+
+    if (!GetWorld())
+    {
+        return;
+    }
+
+    const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
+
+    if (!GameMode)
+    {
+        return;
+    }
+
+    const auto Player = Cast<APawn>(GetOwner());
+    const auto VictimController = Player ? Player->GetController() : nullptr;
+    GameMode->SetKill(KilledBy, VictimController);
+    
+
 }
 
 void USTUHealthComponent::StartAutoHeal()
