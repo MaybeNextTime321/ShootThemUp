@@ -3,6 +3,7 @@
 #include "UI/STUPlayerHUDWidget.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/STUWeaponComponent.h"
+#include "Player/STUPlayerState.h"
 #include "STUUtils.h"
 bool USTUPlayerHUDWidget::Initialize()
 {

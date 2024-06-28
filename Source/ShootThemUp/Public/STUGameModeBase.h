@@ -23,6 +23,10 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     virtual void StartPlay() override;
     virtual UClass *GetDefaultPawnClassForController_Implementation(AController *InController) override;
     void SetKill(AController *Killer, AController *VictimController);
+    int32 GetRoundTime() const;
+    int32 GetCurrentRound() const;
+    int32 GetMaxRound() const;
+
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     FGameData Gamemode;
@@ -35,7 +39,7 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 
     void RoundStart();
     void RoundTimerUpdate();
-
+    
   private:
     void DisplayPlayerStatictic() const;
     void SpawnBots();

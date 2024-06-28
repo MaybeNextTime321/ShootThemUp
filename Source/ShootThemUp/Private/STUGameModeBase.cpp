@@ -54,6 +54,21 @@ void ASTUGameModeBase::SetKill(AController *Killer, AController *VictimControlle
     }
 }
 
+int32 ASTUGameModeBase::GetRoundTime() const
+{
+    return TimeRemainInRound;
+}
+
+int32 ASTUGameModeBase::GetCurrentRound() const
+{
+    return CurrentRound;
+}
+
+int32 ASTUGameModeBase::GetMaxRound() const
+{
+    return Gamemode.NumberOfRounds;
+}
+
 
 
 void ASTUGameModeBase::RoundStart()
