@@ -26,7 +26,8 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     int32 GetRoundTime() const;
     int32 GetCurrentRound() const;
     int32 GetMaxRound() const;
-
+    void RespawnPerson(AController *PawnController);
+    
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     FGameData Gamemode;
@@ -51,4 +52,5 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     void SetupTeams();
     FLinearColor GetColorByTeamID(int32 TeamID);
     void SetPlayerColor(AController *PlayerController);
+    void InitializeRespawn(AController *RespawnerPlayer);
 };

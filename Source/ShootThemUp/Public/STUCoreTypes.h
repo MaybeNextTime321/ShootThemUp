@@ -96,6 +96,12 @@ USTRUCT(BlueprintType) struct FGameData
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = 3, ClampMax = 300))
     int32 RoundDurationInSecond = 3;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = 3, ClampMax = 20))
+    int32 RespawnTime = 5;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = 3, ClampMax = 20))
+    int32 MinimumTimerValueAfterRespawn = 5;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     FLinearColor DefaultColor = FLinearColor::Red;
 

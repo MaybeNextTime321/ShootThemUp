@@ -5,6 +5,8 @@
 #include "AIController.h"
 #include "STUUtils.h"
 #include "Components/STUWeaponComponent.h"
+#include "Components/STURespawnComponent.h"
+#include "Components/STURespawnComponent.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
 #include "Player/STUPlayerState.h"
@@ -51,6 +53,7 @@ void ASTUGameModeBase::SetKill(AController *Killer, AController *VictimControlle
     if (VictimState)
     {
         VictimState->AddDeath();
+        InitializeRespawn(VictimController);
     }
 }
 
@@ -67,6 +70,15 @@ int32 ASTUGameModeBase::GetCurrentRound() const
 int32 ASTUGameModeBase::GetMaxRound() const
 {
     return Gamemode.NumberOfRounds;
+}
+
+void ASTUGameModeBase::RespawnPerson(AController *PawnController)
+{
+    if (TimeRemainInRound < (Gamemode.RespawnTime + Gamemode.MinimumTimerValueAfterRespawn))
+    {
+        return;
+    }
+    RestartSinglePlayer(PawnController);
 }
 
 
@@ -232,4 +244,21 @@ void ASTUGameModeBase::SetPlayerColor(AController *PlayerController)
     }
 
     Character->SetColor(SetupColor);
+}
+
+void ASTUGameModeBase::InitializeRespawn(AController *RespawnerPlayer)
+{
+    if (!RespawnerPlayer)
+    {
+        return;
+    }
+
+    auto RespawnComponent = STUUtils::GetPlayerComponent<USTURespawnComponent>(RespawnerPlayer);
+    if (!RespawnComponent)
+    {
+        return;
+    }
+    
+    RespawnComponent->InitializeRespawn(Gamemode.RespawnTime);
+
 }
