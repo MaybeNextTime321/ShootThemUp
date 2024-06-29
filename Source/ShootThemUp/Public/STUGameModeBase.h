@@ -42,6 +42,7 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     void RoundTimerUpdate();
     
   private:
+    void GameOver();
     void DisplayPlayerStatictic() const;
     void SpawnBots();
     FTimerHandle RoundTimer;

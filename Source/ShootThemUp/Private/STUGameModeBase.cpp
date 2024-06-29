@@ -11,6 +11,7 @@
 #include "Player/STUPlayerController.h"
 #include "Player/STUPlayerState.h"
 #include "UI/STUHUD.h"
+#include "EngineUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(GameModeBase, All, All)
 
@@ -97,8 +98,7 @@ void ASTUGameModeBase::RoundStart()
     }
     else
     {
-        UE_LOG(GameModeBase, Display, TEXT("============ GAME OVER ============"));
-        DisplayPlayerStatictic();
+        GameOver();
     }
    
 }
@@ -110,6 +110,20 @@ void ASTUGameModeBase::RoundTimerUpdate()
     if (TimeRemainInRound == 0)
     {
         RoundStart();
+    }
+}
+
+void ASTUGameModeBase::GameOver()
+{
+    UE_LOG(GameModeBase, Display, TEXT("============ GAME OVER ============"));
+    DisplayPlayerStatictic();
+    for (auto Pawn : TActorRange<APawn>(GetWorld()))
+    {
+        if (Pawn)
+        {
+            Pawn->TurnOff();
+            Pawn->DisableInput(nullptr);
+        }
     }
 }
 
