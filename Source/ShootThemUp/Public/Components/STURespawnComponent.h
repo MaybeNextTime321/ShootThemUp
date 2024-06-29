@@ -15,7 +15,8 @@ class SHOOTTHEMUP_API USTURespawnComponent : public UActorComponent
   public:
     USTURespawnComponent();
     void InitializeRespawn(int32 RespawnFullTime);
-
+    bool RespawnInProgress() const;
+    int32 GetRespawnTime() const;
   protected:
     virtual void BeginPlay() override;
 

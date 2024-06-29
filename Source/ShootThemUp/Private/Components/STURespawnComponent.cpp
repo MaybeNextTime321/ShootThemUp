@@ -19,6 +19,20 @@ void USTURespawnComponent::InitializeRespawn(int32 RespawnFullTime)
     GetWorld()->GetTimerManager().SetTimer(RespawnTimer, this, &USTURespawnComponent::RespawnTick, 1.0f, true);
 }
 
+bool USTURespawnComponent::RespawnInProgress() const
+{
+    if (!GetWorld())
+    {
+        return false;
+    }
+    return GetWorld()->GetTimerManager().IsTimerActive(RespawnTimer);
+}
+
+int32 USTURespawnComponent::GetRespawnTime() const
+{
+    return RespawnTime;
+}
+
 void USTURespawnComponent::BeginPlay()
 {
 	Super::BeginPlay();
