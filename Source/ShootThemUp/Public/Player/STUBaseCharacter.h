@@ -4,12 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "STUBaseCharacter.generated.h"
 
-class UCameraComponent;
+
 class USTUHealthComponent;
-class UTextRenderComponent;
 class ASTUBaseWeaponActor;
 class USTUWeaponComponent;
 
@@ -26,17 +24,8 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-    UCameraComponent *CameraComp;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
-    USpringArmComponent *SpringArmComp;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
     USTUHealthComponent *HealthComponent;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
-    UTextRenderComponent *TextRenderComponent;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
     USTUWeaponComponent *WeaponComponent;
@@ -56,11 +45,8 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
-    // Called to bind functionality to input
-    virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
-
     UFUNCTION(BlueprintCallable)
-    bool IsRunning() const;
+    virtual bool IsRunning() const;
 
     UFUNCTION(BlueprintCallable)
     float GetDegree();
@@ -73,11 +59,6 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
   private:
     UFUNCTION()
     void OnHealthChange(float HP, float HPDealta);
-    void MoveForward(float Amount);
-    void MoveRight(float Amount);
-    void SetShiftValue();
-    bool ShiftIsPressed = false;
-    bool IsMoveForward = true;
 
     UFUNCTION()
     void OnGroupned(const FHitResult &Hit);
