@@ -3,7 +3,9 @@
 #include "Player/STUPlayerCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/STUWeaponComponent.h"
+#include "Components/SphereComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer &ObjInit) : Super(ObjInit)
 {
@@ -16,6 +18,19 @@ ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer &ObjInit) : Su
 
     CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
     CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
+
+    CameraSphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CameraSphereComponent"));
+    CameraSphereComponent->SetupAttachment(SpringArmComp);
+    CameraSphereComponent->SetSphereRadius(10.0f);
+    CameraSphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+}
+
+void ASTUPlayerCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+
+    CameraSphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ASTUPlayerCharacter::CameraSphereBeginOverlap);
+    CameraSphereComponent->OnComponentEndOverlap.AddDynamic(this, &ASTUPlayerCharacter::CameraSphereEndOverlap);
 }
 
 void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
@@ -57,4 +72,36 @@ void ASTUPlayerCharacter::SetShiftValue()
 {
 
     ShiftIsPressed = !ShiftIsPressed;
+}
+
+void ASTUPlayerCharacter::CameraSphereBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
+                                                   UPrimitiveComponent *OtherComp, int32 OtherBodyIndex,
+                                                   bool bFromSweep, const FHitResult &SweepResult)
+{
+    CheckCameraOverlap();
+}
+
+void ASTUPlayerCharacter::CameraSphereEndOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
+                                                 UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
+{
+    CheckCameraOverlap();
+}
+
+void ASTUPlayerCharacter::CheckCameraOverlap()
+{
+    const bool HideMesh = CameraSphereComponent->IsOverlappingComponent(GetCapsuleComponent());
+    GetMesh()->SetOwnerNoSee(HideMesh);
+
+    TArray<USceneComponent*> ChildrenComponents;
+
+    GetMesh()->GetChildrenComponents(true, ChildrenComponents);
+
+    for (auto item : ChildrenComponents)
+    {
+      const auto CastingItem = Cast<UPrimitiveComponent>(item);
+        if (CastingItem)
+        {
+            CastingItem->SetOwnerNoSee(HideMesh);
+        }
+    }
 }
