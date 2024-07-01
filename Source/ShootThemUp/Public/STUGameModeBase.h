@@ -20,6 +20,7 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
   public:
     ASTUGameModeBase();
 
+    FOnChangeMathState OnChangeMathStateDelegate;
     virtual void StartPlay() override;
     virtual UClass *GetDefaultPawnClassForController_Implementation(AController *InController) override;
     void SetKill(AController *Killer, AController *VictimController);
@@ -27,7 +28,7 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     int32 GetCurrentRound() const;
     int32 GetMaxRound() const;
     void RespawnPerson(AController *PawnController);
-    
+
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     FGameData Gamemode;
@@ -40,8 +41,10 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 
     void RoundStart();
     void RoundTimerUpdate();
-    
+
   private:
+    ESTUMathState MathState = ESTUMathState::WaitingToStart;
+    void SetMathState(ESTUMathState NewMathState);
     void GameOver();
     void DisplayPlayerStatictic() const;
     void SpawnBots();

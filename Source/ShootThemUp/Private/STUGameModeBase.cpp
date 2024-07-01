@@ -29,6 +29,7 @@ void ASTUGameModeBase::StartPlay()
     SpawnBots();
     SetupTeams();
     RoundStart();
+    SetMathState(ESTUMathState::InProgress);
 }
 
 UClass *ASTUGameModeBase::GetDefaultPawnClassForController_Implementation(AController *InController)
@@ -113,9 +114,21 @@ void ASTUGameModeBase::RoundTimerUpdate()
     }
 }
 
+void ASTUGameModeBase::SetMathState(ESTUMathState NewMathState)
+{
+    if (MathState == NewMathState)
+    {
+        return;
+    }
+
+    MathState = NewMathState;
+    OnChangeMathStateDelegate.Broadcast(NewMathState);
+}
+
 void ASTUGameModeBase::GameOver()
 {
     UE_LOG(GameModeBase, Display, TEXT("============ GAME OVER ============"));
+
     DisplayPlayerStatictic();
     for (auto Pawn : TActorRange<APawn>(GetWorld()))
     {
@@ -125,6 +138,8 @@ void ASTUGameModeBase::GameOver()
             Pawn->DisableInput(nullptr);
         }
     }
+
+    SetMathState(ESTUMathState::GameOver);
 }
 
 void ASTUGameModeBase::DisplayPlayerStatictic() const

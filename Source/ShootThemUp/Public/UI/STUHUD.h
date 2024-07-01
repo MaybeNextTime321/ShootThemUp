@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "STUCoreTypes.h"
 #include "STUHUD.generated.h"
 
 /**
@@ -24,5 +25,6 @@ class SHOOTTHEMUP_API ASTUHUD : public AHUD
     virtual void BeginPlay() override;
 
   private:
+    void MathStateUpated(ESTUMathState NewState);
     void DrawAim();
 };
