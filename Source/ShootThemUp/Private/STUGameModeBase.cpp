@@ -83,6 +83,25 @@ void ASTUGameModeBase::RespawnPerson(AController *PawnController)
     RestartSinglePlayer(PawnController);
 }
 
+void ASTUGameModeBase::PauseGame(APlayerController* PC)
+{
+    const auto GameInPause = Super::SetPause(PC);
+    if (GameInPause)
+    {
+        SetMathState(ESTUMathState::InPause);
+    }
+}
+
+void ASTUGameModeBase::Unpause()
+{
+    const bool IsUnpaused = Super::ClearPause();
+
+    if (IsUnpaused)
+    {
+        SetMathState(ESTUMathState::InProgress);
+    }
+}
+
 
 
 void ASTUGameModeBase::RoundStart()

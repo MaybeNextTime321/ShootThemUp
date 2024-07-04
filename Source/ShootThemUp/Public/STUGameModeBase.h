@@ -28,7 +28,8 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
     int32 GetCurrentRound() const;
     int32 GetMaxRound() const;
     void RespawnPerson(AController *PawnController);
-
+    void PauseGame(APlayerController *PC);
+    void Unpause();
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game")
     FGameData Gamemode;

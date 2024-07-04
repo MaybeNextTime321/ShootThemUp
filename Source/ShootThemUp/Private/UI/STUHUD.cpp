@@ -17,14 +17,25 @@ void ASTUHUD::DrawHUD()
 void ASTUHUD::BeginPlay()
 {
     Super::BeginPlay();
-    UUserWidget *PlayerHUDWidget = CreateWidget(GetWorld(), PlayerHUD);
-    if (PlayerHUDWidget)
-        PlayerHUDWidget->AddToViewport();
-
 
     if (!GetWorld())
     {
         return;
+    }
+
+    MatchStateHUD.Add(ESTUMathState::InProgress, CreateWidget(GetWorld(), PlayerHUD));
+    MatchStateHUD.Add(ESTUMathState::InPause, CreateWidget(GetWorld(), PauseHUD));
+
+    for (const auto Widget : MatchStateHUD)
+    {
+        const auto HUD = Widget.Value;
+        if (!HUD)
+        {
+            continue;
+        }
+
+        HUD->AddToViewport();
+        HUD->SetVisibility(ESlateVisibility::Hidden);
     }
 
     const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -40,6 +51,19 @@ void ASTUHUD::BeginPlay()
 void ASTUHUD::MathStateUpated(ESTUMathState NewState)
  {
     UE_LOG(LogHUD, Display, TEXT("New Match State is %s"), *UEnum::GetValueAsString(NewState));
+    if (!MatchStateHUD.Contains(NewState))
+    {
+        return;
+    }
+
+    if (CurrenntWidget)
+    {
+        CurrenntWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
+
+    CurrenntWidget = MatchStateHUD[NewState];
+
+    CurrenntWidget->SetVisibility(ESlateVisibility::Visible);
  }
 
 void ASTUHUD::DrawAim()

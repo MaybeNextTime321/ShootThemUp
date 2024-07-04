@@ -22,9 +22,16 @@ class SHOOTTHEMUP_API ASTUHUD : public AHUD
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     TSubclassOf<UUserWidget> PlayerHUD;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    TSubclassOf<UUserWidget> PauseHUD;
+
     virtual void BeginPlay() override;
 
   private:
+    UPROPERTY()
+    TMap<ESTUMathState, UUserWidget *> MatchStateHUD;
+    UPROPERTY()
+    UUserWidget *CurrenntWidget = nullptr;
     void MathStateUpated(ESTUMathState NewState);
     void DrawAim();
 };
