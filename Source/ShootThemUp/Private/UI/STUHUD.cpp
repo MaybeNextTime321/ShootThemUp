@@ -25,6 +25,7 @@ void ASTUHUD::BeginPlay()
 
     MatchStateHUD.Add(ESTUMathState::InProgress, CreateWidget(GetWorld(), PlayerHUD));
     MatchStateHUD.Add(ESTUMathState::InPause, CreateWidget(GetWorld(), PauseHUD));
+    MatchStateHUD.Add(ESTUMathState::GameOver, CreateWidget(GetWorld(), GameOverHUD));
 
     for (const auto Widget : MatchStateHUD)
     {

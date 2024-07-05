@@ -27,4 +27,8 @@ class STUUtils
 
         return PlayerState1->GetTeamNumber() != PlayerState2->GetTeamNumber();
     }
+    static FText TextFromInt(int32 Value)
+    {
+        return FText::FromString(FString::FromInt(Value));
+    }
 };
