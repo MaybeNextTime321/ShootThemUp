@@ -6,11 +6,13 @@
 #include "Player/STUPlayerState.h"
 #include "STUUtils.h"
 #include "Components/VerticalBox.h"
+#include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
-bool USTUGameOverWidget::Initialize()
+void USTUGameOverWidget::NativeOnInitialized()
 {
     
-    bool InitializeParent = Super::Initialize();
+    Super::NativeOnInitialized();
 
     if (GetWorld() && GetWorld()->GetAuthGameMode())
     {
@@ -20,8 +22,17 @@ bool USTUGameOverWidget::Initialize()
             GameMode->OnChangeMathStateDelegate.AddUObject(this, &USTUGameOverWidget::OnMathStateChange);
         }
     }
+    if (ResetLevelButton)
+    {
+        ResetLevelButton->OnClicked.AddDynamic(this, &USTUGameOverWidget::OnLevelReset);
+    }
 
-    return InitializeParent;
+}
+
+void USTUGameOverWidget::OnLevelReset()
+{
+    const auto LevelName = UGameplayStatics::GetCurrentLevelName(this);
+    UGameplayStatics::OpenLevel(this, FName(LevelName));
 }
 
 void USTUGameOverWidget::OnMathStateChange(ESTUMathState NewMatchState)

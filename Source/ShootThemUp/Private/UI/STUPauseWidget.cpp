@@ -4,16 +4,14 @@
 #include "STUGameModeBase.h"
 #include "Components/Button.h"
 
-bool USTUPauseWidget::Initialize()
+void USTUPauseWidget::NativeOnInitialized()
 {
-    bool InitializeParent = Super::Initialize();
+    Super::NativeOnInitialized();
 
     if (ClearPauseButton)
     {
         ClearPauseButton->OnClicked.AddDynamic(this, &USTUPauseWidget::ClearPause);
     }
-
-    return InitializeParent;
 
 }
 

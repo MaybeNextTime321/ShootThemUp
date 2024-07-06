@@ -18,7 +18,7 @@ class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
     GENERATED_BODY()
 
   public:
-    virtual bool Initialize() override;
+
     UFUNCTION(BlueprintCallable, Category = "PlayerHUDWidget")
     float GetHealthProcent() const;
 
@@ -39,5 +39,6 @@ class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
     UFUNCTION()
     void OnHealthChange(float HP, float HPDelta);
 
-  private:
+  protected:
+    virtual void NativeOnInitialized() override;
 };
