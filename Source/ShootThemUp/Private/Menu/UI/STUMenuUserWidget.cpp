@@ -4,12 +4,25 @@
 #include "Menu/UI/STUMenuUserWidget.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "STUGameInstance.h"
+
+DEFINE_LOG_CATEGORY_STATIC(STUMenuWigetLog, All, All)
 
 void USTUMenuUserWidget::OnGameStart()
 {
-    const FName NewLevel = "TestLevel";
+    if (!GetWorld())
+    {
+        return;
+    }
+    const auto GameInstance = GetWorld()->GetGameInstance<USTUGameInstance>();
+    const FName LevelName = GameInstance->GetStartLevelName();
 
-    UGameplayStatics::OpenLevel(this, NewLevel);
+    if (LevelName == NAME_None)
+    {
+        UE_LOG(STUMenuWigetLog, Error, TEXT("Setup First Level Name in Game Instance"));
+    }
+
+    UGameplayStatics::OpenLevel(this, LevelName);
 }
 
 void USTUMenuUserWidget::NativeOnInitialized()
