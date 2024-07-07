@@ -18,10 +18,15 @@ class SHOOTTHEMUP_API USTUMenuUserWidget : public UUserWidget
     UFUNCTION()
     void OnGameStart();
 
+    UFUNCTION()
+    void QuitGame();
 
   protected:
     UPROPERTY(meta = (BindWidget))
     UButton *StartGameButton;
+
+    UPROPERTY(meta = (BindWidget))
+    UButton *QuitGameButton;
 
     virtual void NativeOnInitialized() override;
 };
