@@ -1,14 +1,14 @@
 // Shoot Them Up. Project from Udemy course
 
 
-#include "Menu/UI/STUMenuUserWidget.h"
+#include "Menu/UI/STUOpenMenuUserWidget.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "STUGameInstance.h"
 
-DEFINE_LOG_CATEGORY_STATIC(STUMenuWigetLog, All, All)
+DEFINE_LOG_CATEGORY_STATIC(STUOpenMenuWigetLog, All, All)
 
-void USTUMenuUserWidget::OnGameStart()
+void USTUOpenMenuUserWidget::OnOpenMenu()
 {
     if (!GetWorld())
     {
@@ -21,21 +21,24 @@ void USTUMenuUserWidget::OnGameStart()
         return;
     }
 
-    const FName LevelName = GameInstance->GetStartLevelName();
+
+    const FName LevelName = GameInstance->GetMenuLevelName();
 
     if (LevelName == NAME_None)
     {
-        UE_LOG(STUMenuWigetLog, Error, TEXT("Setup First Level Name in Game Instance"));
+        UE_LOG(STUOpenMenuWigetLog, Error, TEXT("Setup Menu Level Name in Game Instance"));
     }
 
     UGameplayStatics::OpenLevel(this, LevelName);
 }
 
-void USTUMenuUserWidget::NativeOnInitialized()
+void USTUOpenMenuUserWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
-    if (StartGameButton)
+    if (OpenMenuButton)
     {
-        StartGameButton->OnClicked.AddDynamic(this, &USTUMenuUserWidget::OnGameStart);
+        OpenMenuButton->OnClicked.AddDynamic(this, &USTUOpenMenuUserWidget::OnOpenMenu);
     }
 }
+
+

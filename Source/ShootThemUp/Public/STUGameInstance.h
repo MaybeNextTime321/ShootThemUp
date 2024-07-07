@@ -19,7 +19,15 @@ class SHOOTTHEMUP_API USTUGameInstance : public UGameInstance
             return FirstLevelName;
 		}
 
+		FName GetMenuLevelName()
+        {
+            return MenuLevelName;
+        }
+
 	protected:
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "LevelData")
 		FName FirstLevelName = NAME_None;
+
+        UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "LevelData")
+        FName MenuLevelName = NAME_None;
 };
