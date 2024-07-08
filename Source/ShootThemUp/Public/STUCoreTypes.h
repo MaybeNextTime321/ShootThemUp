@@ -118,3 +118,20 @@ enum class ESTUMathState: uint8
     GameOver
 };
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnChangeMathState, ESTUMathState);
+
+
+USTRUCT(BlueprintType) struct FLevelData
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = 0, ClampMax = 100))
+    FName LevelName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = 0, ClampMax = 100))
+    FName DisplayedLevelName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    UTexture2D *LevelThumb;
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelected, FLevelData);
