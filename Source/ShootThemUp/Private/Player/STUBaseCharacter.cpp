@@ -73,7 +73,7 @@ void ASTUBaseCharacter::SetColor(FLinearColor& Color)
     MaterialInstance->SetVectorParameterValue(MaterialColorName, Color);
 }
 
-void ASTUBaseCharacter::OnHealthChange(float HP, float HPDealta)
+void ASTUBaseCharacter::OnHealthChange(float HP, float HPDelta)
 {
 
 }

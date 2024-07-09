@@ -41,6 +41,9 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
     virtual void CharacterIsDead();
 
+    UFUNCTION()
+    virtual void OnHealthChange(float HP, float HPDelta);
+
   public:
     // Called every frame
     virtual void Tick(float DeltaTime) override;
@@ -57,9 +60,6 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     void SetColor(FLinearColor& Color);
 
   private:
-    UFUNCTION()
-    void OnHealthChange(float HP, float HPDealta);
-
     UFUNCTION()
     void OnGroupned(const FHitResult &Hit);
 };
