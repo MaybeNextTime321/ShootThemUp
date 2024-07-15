@@ -9,9 +9,9 @@
 
 class USTUWeaponComponent;
 class USTUHealthComponent;
-/**
- *
- */
+class UProgressBar;
+
+
 UCLASS()
 class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
 {
@@ -36,9 +36,27 @@ class SHOOTTHEMUP_API USTUPlayerHUDWidget : public UUserWidget
     UFUNCTION(BlueprintImplementableEvent, Category = "UI")
     void OnTakeDamage();
 
-    UFUNCTION()
-    void OnHealthChange(float HP, float HPDelta);
-
   protected:
     virtual void NativeOnInitialized() override;
+
+    UPROPERTY(meta = (BindWidget))
+    UProgressBar *HealthProgressBar;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HealthWidget")
+    float PersentForBadColor = 0.3;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HealthWidget")
+    FColor GoodColor = FColor::Green;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HealthWidget")
+    FColor BadColor = FColor::Red;
+    
+    UFUNCTION()
+    virtual void OnHealthChange(float HP, float HPDelta);
+
+    private:
+    void SetProgressBarValue();
+      
+    UFUNCTION()
+    void OnNewPawn(APawn* NewPawan);
 };

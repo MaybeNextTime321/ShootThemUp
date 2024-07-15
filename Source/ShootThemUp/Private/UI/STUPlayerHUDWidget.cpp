@@ -4,19 +4,38 @@
 #include "Components/STUHealthComponent.h"
 #include "Components/STUWeaponComponent.h"
 #include "Player/STUPlayerState.h"
+#include "Components/ProgressBar.h"
 #include "STUUtils.h"
 
 void USTUPlayerHUDWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
+
+    if (GetOwningPlayer())
+    {
+        GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &USTUPlayerHUDWidget::OnNewPawn);
+    }
+}
+
+void USTUPlayerHUDWidget::SetProgressBarValue()
+{
+    if (HealthProgressBar)
+    {
+      HealthProgressBar->SetFillColorAndOpacity(GetHealthProcent() > PersentForBadColor ? GoodColor : BadColor);
+    }
+}
+
+void USTUPlayerHUDWidget::OnNewPawn(APawn *NewPawan)
+{
     const auto HealthComponent = STUUtils::GetPlayerComponent<USTUHealthComponent>(GetOwningPlayerPawn());
 
     if (HealthComponent)
     {
-        HealthComponent->OnHealthChange.AddUObject(this, &USTUPlayerHUDWidget::OnHealthChange);
+      HealthComponent->OnHealthChange.AddUObject(this, &USTUPlayerHUDWidget::OnHealthChange);
     }
-
+    SetProgressBarValue();
 }
+
 float USTUPlayerHUDWidget::GetHealthProcent() const
 {
 
@@ -67,6 +86,7 @@ bool USTUPlayerHUDWidget::IsSpectating() const
 
 void USTUPlayerHUDWidget::OnHealthChange(float HP, float HPDelta)
 {
+    SetProgressBarValue();
     if (HPDelta < 0.0f)
     {
         OnTakeDamage();
