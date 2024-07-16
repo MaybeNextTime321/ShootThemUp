@@ -7,6 +7,7 @@
 #include "STUCoreTypes.h"
 #include "STUHUD.generated.h"
 
+class USTUBaseWidget;
 /**
  *
  */
@@ -20,21 +21,21 @@ class SHOOTTHEMUP_API ASTUHUD : public AHUD
 
   protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UUserWidget> PlayerHUD;
+    TSubclassOf<USTUBaseWidget> PlayerHUD;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UUserWidget> PauseHUD;
+    TSubclassOf<USTUBaseWidget> PauseHUD;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UUserWidget> GameOverHUD;
+    TSubclassOf<USTUBaseWidget> GameOverHUD;
 
     virtual void BeginPlay() override;
 
   private:
     UPROPERTY()
-    TMap<ESTUMathState, UUserWidget *> MatchStateHUD;
+    TMap<ESTUMathState, USTUBaseWidget *> MatchStateHUD;
     UPROPERTY()
-    UUserWidget *CurrenntWidget = nullptr;
+    USTUBaseWidget *CurrenntWidget = nullptr;
     void MathStateUpated(ESTUMathState NewState);
     void DrawAim();
 };

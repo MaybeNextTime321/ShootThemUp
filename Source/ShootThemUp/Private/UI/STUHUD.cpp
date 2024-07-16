@@ -1,7 +1,7 @@
 // Shoot Them Up. Project from Udemy course
 
 #include "UI/STUHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/STUBaseWidget.h"
 #include "STUGameModeBase.h"
 #include "Engine/Canvas.h"
 
@@ -23,9 +23,9 @@ void ASTUHUD::BeginPlay()
         return;
     }
 
-    MatchStateHUD.Add(ESTUMathState::InProgress, CreateWidget(GetWorld(), PlayerHUD));
-    MatchStateHUD.Add(ESTUMathState::InPause, CreateWidget(GetWorld(), PauseHUD));
-    MatchStateHUD.Add(ESTUMathState::GameOver, CreateWidget(GetWorld(), GameOverHUD));
+    MatchStateHUD.Add(ESTUMathState::InProgress, CreateWidget<USTUBaseWidget>(GetWorld(), PlayerHUD));
+    MatchStateHUD.Add(ESTUMathState::InPause, CreateWidget<USTUBaseWidget>(GetWorld(), PauseHUD));
+    MatchStateHUD.Add(ESTUMathState::GameOver, CreateWidget<USTUBaseWidget>(GetWorld(), GameOverHUD));
 
     for (const auto Widget : MatchStateHUD)
     {
@@ -65,6 +65,7 @@ void ASTUHUD::MathStateUpated(ESTUMathState NewState)
     CurrenntWidget = MatchStateHUD[NewState];
 
     CurrenntWidget->SetVisibility(ESlateVisibility::Visible);
+    CurrenntWidget->ShowAnimation();
  }
 
 void ASTUHUD::DrawAim()

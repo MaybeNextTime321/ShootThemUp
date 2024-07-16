@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "STUMenuHUD.generated.h"
 
+class USTUBaseWidget;
 /**
  * 
  */
@@ -18,7 +19,7 @@ class SHOOTTHEMUP_API ASTUMenuHUD : public AHUD
 	protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UUserWidget> MenuHUD;
+      TSubclassOf<USTUBaseWidget> MenuHUD;
 
     virtual void BeginPlay() override;
 };
