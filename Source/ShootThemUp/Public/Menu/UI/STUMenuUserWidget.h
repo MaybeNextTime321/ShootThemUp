@@ -48,4 +48,10 @@ class SHOOTTHEMUP_API USTUMenuUserWidget : public USTUBaseWidget
     UFUNCTION()
     void OnSelectedLevelChange(const FLevelData NewLevel);
 
+    protected:
+    UPROPERTY(meta = (BindWidgetAnim), Transient)
+    UWidgetAnimation * HideAnim;
+
+    virtual void OnAnimationFinished_Implementation(const UWidgetAnimation *Animation) override;
+
 };

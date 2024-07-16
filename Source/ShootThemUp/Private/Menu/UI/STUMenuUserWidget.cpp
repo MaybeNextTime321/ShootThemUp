@@ -15,25 +15,7 @@ DEFINE_LOG_CATEGORY_STATIC(STUMenuWigetLog, All, All)
 
 void USTUMenuUserWidget::OnGameStart()
 {
-    if (!GetWorld())
-    {
-        return;
-    }
-    const auto GameInstance = GetWorld()->GetGameInstance<USTUGameInstance>();
-
-    if (!GameInstance)
-    {
-        return;
-    }
-
-    const FName LevelName = GameInstance->GetStartLevel().LevelName;
-
-    if (LevelName == NAME_None)
-    {
-        UE_LOG(STUMenuWigetLog, Error, TEXT("Setup First Level Name in Game Instance"));
-    }
-
-    UGameplayStatics::OpenLevel(this, LevelName);
+    PlayAnimation(HideAnim);
 }
 
 void USTUMenuUserWidget::QuitGame()
@@ -135,4 +117,35 @@ void USTUMenuUserWidget::OnSelectedLevelChange(const FLevelData NewLevel)
         Level->SetImageVisibility(LevelData.LevelName == NewLevel.LevelName);
         
     }
+}
+
+void USTUMenuUserWidget::OnAnimationFinished_Implementation(const UWidgetAnimation *Animation)
+{
+    Super::OnAnimationFinished_Implementation(Animation);
+
+    if (Animation != HideAnim)
+    {
+        return;
+    }
+
+    if (!GetWorld())
+    {
+        return;
+    }
+
+    const auto GameInstance = GetWorld()->GetGameInstance<USTUGameInstance>();
+
+    if (!GameInstance)
+    {
+        return;
+    }
+
+    const FName LevelName = GameInstance->GetStartLevel().LevelName;
+
+    if (LevelName == NAME_None)
+    {
+        UE_LOG(STUMenuWigetLog, Error, TEXT("Setup First Level Name in Game Instance"));
+    }
+
+    UGameplayStatics::OpenLevel(this, LevelName);
 }
