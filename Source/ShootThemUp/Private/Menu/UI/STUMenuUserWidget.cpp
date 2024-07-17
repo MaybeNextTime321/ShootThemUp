@@ -5,6 +5,7 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Sound/SoundCue.h"
 #include "STUGameInstance.h"
 #include "STUCoreTypes.h"
 #include "Menu/UI/STULevelItemWidget.h"
@@ -16,6 +17,7 @@ DEFINE_LOG_CATEGORY_STATIC(STUMenuWigetLog, All, All)
 void USTUMenuUserWidget::OnGameStart()
 {
     PlayAnimation(HideAnim);
+    UGameplayStatics::PlaySound2D(GetWorld(), StartGameSound);
 }
 
 void USTUMenuUserWidget::QuitGame()

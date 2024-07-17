@@ -11,6 +11,7 @@ class UButton;
 class UHorizontalBox;
 class USTULevelItemWidget;
 class USTUGameInstance;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API USTUMenuUserWidget : public USTUBaseWidget
@@ -42,6 +43,9 @@ class SHOOTTHEMUP_API USTUMenuUserWidget : public USTUBaseWidget
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "LevelData")
     TSubclassOf<UUserWidget> SpawnedLevelClass;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue* StartGameSound;
 
     virtual void NativeOnInitialized() override;
 
