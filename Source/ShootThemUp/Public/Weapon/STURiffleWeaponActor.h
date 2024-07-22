@@ -9,6 +9,7 @@
 class USTUWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UAudioComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
@@ -36,10 +37,13 @@ class SHOOTTHEMUP_API ASTURiffleWeaponActor : public ASTUBaseWeaponActor
     FTimerHandle TimerHandle;
     virtual bool GetTraceData(FVector &TraceStart, FVector &SoketForward, FVector &TraceEnd) override;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    UAudioComponent *FireAudioComponent;
+
   private: 
     AController * GetController() const;
     void SpawnTraceAtLocation(const FVector &StartLocation, const FVector &EndLocation);
     UParticleSystemComponent *MuzzleFlashComponent;
-    void SetMuzzleVisibility(bool IsVisible);
+    void SetVFXVisibility(bool IsActive);
     void MakeHitWithDamage(FHitResult HitResult);
 };

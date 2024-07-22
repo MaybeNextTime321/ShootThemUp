@@ -10,6 +10,7 @@
 class USTUHealthComponent;
 class ASTUBaseWeaponActor;
 class USTUWeaponComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -43,6 +44,9 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 
     UFUNCTION()
     virtual void OnHealthChange(float HP, float HPDelta);
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue *DeathSound;
 
   public:
     // Called every frame

@@ -8,9 +8,10 @@
 
 class USphereComponent;
 class ASTUProjectile;
-/**
- *
- */
+class USoundCue;
+
+
+
 UCLASS()
 class SHOOTTHEMUP_API ASTULauncherBaseWeaponActor : public ASTUBaseWeaponActor
 {
@@ -22,4 +23,7 @@ class SHOOTTHEMUP_API ASTULauncherBaseWeaponActor : public ASTUBaseWeaponActor
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
     TSubclassOf<ASTUProjectile> ProjectileClass;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue *NoAmmoSound;
 };

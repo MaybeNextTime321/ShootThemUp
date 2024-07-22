@@ -8,18 +8,21 @@
 #include <Kismet/GameplayStatics.h>
 #include <NiagaraComponent.h>
 #include <NiagaraFunctionLibrary.h>
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(RiffleWeaponLog, All, All)
 void ASTURiffleWeaponActor::StartFire()
 {
-    SetMuzzleVisibility(true);
+    SetVFXVisibility(true);
     GetWorldTimerManager().SetTimer(TimerHandle, this, &ASTURiffleWeaponActor::MakeShoot, ShootTimer, true);
     MakeShoot();
 }
 
 void ASTURiffleWeaponActor::EndFire()
 {
-    SetMuzzleVisibility(false);
+    SetVFXVisibility(false);
     GetWorldTimerManager().ClearTimer(TimerHandle);
 }
 
@@ -70,7 +73,12 @@ void ASTURiffleWeaponActor::BeginPlay()
                                                                                           FVector::ZeroVector, //
                                                                                           FRotator::ZeroRotator);
     }
-    SetMuzzleVisibility(false);
+    if (FireSound)
+    {
+        FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound, SkeletalMesh, MuzzleSoketName);
+    }
+
+    SetVFXVisibility(false);
 
     check(WeaponFXComponent);
 }
@@ -102,14 +110,19 @@ void ASTURiffleWeaponActor::SpawnTraceAtLocation(const FVector &StartLocation, c
     }
 }
 
-void ASTURiffleWeaponActor::SetMuzzleVisibility(bool IsVisible)
+void ASTURiffleWeaponActor::SetVFXVisibility(bool IsActive)
 {
     if (!MuzzleFlashComponent)
     {
         UE_LOG(RiffleWeaponLog, Warning, TEXT("Invalid Muzzle Flash Component"));
     }
 
-    MuzzleFlashComponent->SetVisibility(IsVisible);
+    MuzzleFlashComponent->SetVisibility(IsActive);
+
+    if (FireAudioComponent)
+    {
+        IsActive ? FireAudioComponent->Play() : FireAudioComponent->Stop();
+    }
 }
 
 void ASTURiffleWeaponActor::MakeHitWithDamage(FHitResult HitResult)

@@ -10,6 +10,7 @@
 #include "STUBaseWeaponActor.generated.h"
 
 class USkeletalMeshComponent;
+class USoundCue;
 
 UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
 {
@@ -46,6 +47,9 @@ UCLASS() class SHOOTTHEMUP_API ASTUBaseWeaponActor : public AActor
     FName MuzzleSoketName = "MuzzleSoket";
 
     virtual void BeginPlay() override;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue *FireSound;
 
   public:
     virtual void StartFire();

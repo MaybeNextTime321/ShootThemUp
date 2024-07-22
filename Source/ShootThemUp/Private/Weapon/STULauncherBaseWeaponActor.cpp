@@ -3,17 +3,22 @@
 #include "Weapon/STULauncherBaseWeaponActor.h"
 #include "Weapon/STUProjectile.h"
 #include <Kismet/GameplayStatics.h>
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void ASTULauncherBaseWeaponActor::StartFire()
 {
-
     MakeShoot();
 }
 
 void ASTULauncherBaseWeaponActor::MakeShoot()
 {
     if (IsAmmoEmpty())
-        return;
+    {
+       UGameplayStatics::SpawnSoundAttached(NoAmmoSound, SkeletalMesh, MuzzleSoketName);
+       return;
+    }
+
     DecreaseAmmo();
     const FVector SoketLocation = GetSoketLocation();
 
@@ -40,6 +45,7 @@ void ASTULauncherBaseWeaponActor::MakeShoot()
                                                                                               FVector::ZeroVector, //
                                                                                               FRotator::ZeroRotator);
         }
+        UGameplayStatics::SpawnSoundAttached(FireSound, SkeletalMesh, MuzzleSoketName);
         Projectile->SetShootDirection(Direction);
         Projectile->SetOwner(GetOwner());
         Projectile->FinishSpawning(SpawnTransform);

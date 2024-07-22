@@ -11,6 +11,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
+
 
 DEFINE_LOG_CATEGORY_STATIC(CharacterLog, All, All)
 
@@ -88,6 +91,8 @@ void ASTUBaseCharacter::CharacterIsDead()
 
     GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     GetMesh()->SetSimulatePhysics(true);
+
+    UGameplayStatics::SpawnSoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
 }
 
 void ASTUBaseCharacter::OnGroupned(const FHitResult &Hit)
