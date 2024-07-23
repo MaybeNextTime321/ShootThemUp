@@ -24,5 +24,6 @@ class SHOOTTHEMUP_API ASTUPlayerController : public APlayerController
 
     private:
     void PauseGame();
+    void ToggleSound();
     void ChangeMatchState(ESTUMathState NewState);
 };

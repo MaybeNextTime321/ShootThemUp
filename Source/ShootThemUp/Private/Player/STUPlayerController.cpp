@@ -3,6 +3,7 @@
 
 #include "Player/STUPlayerController.h"
 #include "Components/STURespawnComponent.h"
+#include "STUGameInstance.h"
 #include "STUGameModeBase.h"
 
 ASTUPlayerController::ASTUPlayerController()
@@ -17,6 +18,7 @@ void ASTUPlayerController::SetupInputComponent()
     if (InputComponent)
     {
         InputComponent->BindAction("Pause", EInputEvent::IE_Pressed, this, &ASTUPlayerController::PauseGame);
+        InputComponent->BindAction("Mute", EInputEvent::IE_Pressed, this, &ASTUPlayerController::ToggleSound);
     }
 }
 
@@ -47,6 +49,15 @@ void ASTUPlayerController::PauseGame()
     if (GameMode)
     {
         GameMode->PauseGame(this);
+    }
+}
+
+void ASTUPlayerController::ToggleSound()
+{
+    const auto GameInstance = Cast<USTUGameInstance>(GetGameInstance());
+    if (GameInstance)
+    {
+        GameInstance->ToggleGameSound();
     }
 }
 
