@@ -7,6 +7,7 @@
 #include "STUBasePickup.generated.h"
 
 class USphereComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBasePickup : public AActor
@@ -27,6 +28,9 @@ class SHOOTTHEMUP_API ASTUBasePickup : public AActor
     float RespawnTime = 5.0f;
 
     virtual bool GivePickupTo(APawn *PlayerPawn);
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue *TakeSound;
 
   public:
     // Called every frame

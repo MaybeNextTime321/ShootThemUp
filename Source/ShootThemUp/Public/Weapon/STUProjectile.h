@@ -9,6 +9,7 @@
 class USphereComponent;
 class UProjectileMovementComponent;
 class USTUWeaponFXComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUProjectile : public AActor
@@ -31,6 +32,9 @@ class SHOOTTHEMUP_API ASTUProjectile : public AActor
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue * ImpactSound;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
     USTUWeaponFXComponent* WeaponFXComponent;
 
@@ -52,6 +56,7 @@ class SHOOTTHEMUP_API ASTUProjectile : public AActor
 
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     bool ApplyAllDamage = false;
+
 
   private:
     FVector ShootVector;

@@ -6,6 +6,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/Components/STUWeaponFXComponent.h"
 #include <DrawDebugHelpers.h>
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 ASTUProjectile::ASTUProjectile()
 {
@@ -50,7 +52,7 @@ void ASTUProjectile::OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor
         UParticleSystemComponent *ParticleSystem =
             UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffect, Hit.ImpactPoint);
     }
-
+    UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, GetActorLocation());
     Destroy();
 }
 
