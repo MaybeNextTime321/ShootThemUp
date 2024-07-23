@@ -3,6 +3,7 @@
 
 class ASTUBaseWeaponActor;
 class UNiagaraSystem;
+class USoundCue;
 // weapon
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeaponActor *)
 
@@ -81,6 +82,9 @@ USTRUCT(BlueprintType) struct FImpactData
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
     FDecalData DecalImpact;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+    USoundCue* ImpactSound;
 };
 
 USTRUCT(BlueprintType) struct FGameData

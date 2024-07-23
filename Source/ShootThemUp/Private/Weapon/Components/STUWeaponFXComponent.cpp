@@ -6,6 +6,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values for this component's properties
 USTUWeaponFXComponent::USTUWeaponFXComponent()
@@ -62,4 +63,5 @@ void USTUWeaponFXComponent::PlayImpactFX(FHitResult HitResult)
                                                         HitResult.ImpactNormal.Rotation());
 
     Decal->SetFadeOut(Impact.DecalImpact.LiveTime, Impact.DecalImpact.FadeTime);
+    UGameplayStatics::SpawnSoundAtLocation(GetWorld(), Impact.ImpactSound, HitResult.ImpactPoint);
 }
