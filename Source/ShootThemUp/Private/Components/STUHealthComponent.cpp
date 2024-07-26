@@ -9,6 +9,7 @@
 #include "TimerManager.h"
 #include "STUGameModeBase.h"
 #include "Player/STUPlayerController.h"
+#include "Perception/AISense_Damage.h"
 
 DEFINE_LOG_CATEGORY_STATIC(HealthComponentLog, All, All)
 
@@ -68,22 +69,28 @@ void USTUHealthComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, co
     PlayCameraShake();
 
     if (Damage == 0.0f || IsDead())
+    {
         return;
+    }
 
     if (HealTimer.IsValid())
+    {
         StopAutoHeal();
+    }
 
     SetHealth(Health - Damage);
+    NotityTakeDamage(InstigatedBy, Damage);
 
     if (IsDead())
     {
         Killed(InstigatedBy);
         OnDead.Broadcast();
     }
-
-
     else if (Autoheal)
+    {
         StartAutoHeal();
+    }
+
 }
 
 void USTUHealthComponent::Killed(AController *KilledBy)
@@ -132,4 +139,13 @@ void USTUHealthComponent::PlayCameraShake()
 void USTUHealthComponent::StopAutoHeal()
 {
     World->GetTimerManager().ClearTimer(HealTimer);
+}
+
+void USTUHealthComponent::NotityTakeDamage(AController *DamageActor, float DamageValue)
+{
+    UAISense_Damage::ReportDamageEvent(GetWorld(), GetOwner(), 
+                                        DamageActor->GetPawn(), 
+                                        DamageValue,
+                                        DamageActor->GetPawn()->GetActorLocation(),
+                                        GetOwner()->GetActorLocation());
 }

@@ -80,4 +80,5 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
     void PlayCameraShake();
     void StartAutoHeal();
     void StopAutoHeal();
+    void NotityTakeDamage(AController* DamageActor, float DamageValue);
 };
